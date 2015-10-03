@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShelvesetComparer", "ShelvesetComparer\ShelvesetComparer.csproj", "{B63E4DB4-AA73-419A-B650-20DEF861E94C}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ShelvesetComparer\\ShelvesetComparer.csproj
+		SccProjectName1 = ShelvesetComparer
+		SccLocalPath1 = ShelvesetComparer
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		VS2012_Debug|Any CPU = VS2012_Debug|Any CPU
+		VS2012_Release|Any CPU = VS2012_Release|Any CPU
+		VS2013_Debug|Any CPU = VS2013_Debug|Any CPU
+		VS2013_Release|Any CPU = VS2013_Release|Any CPU
+		VS2015_Debug|Any CPU = VS2015_Debug|Any CPU
+		VS2015_Release|Any CPU = VS2015_Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2012_Debug|Any CPU.ActiveCfg = VS2012_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2012_Debug|Any CPU.Build.0 = VS2012_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2012_Release|Any CPU.ActiveCfg = VS2012_Release|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2012_Release|Any CPU.Build.0 = VS2012_Release|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2013_Debug|Any CPU.ActiveCfg = VS2013_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2013_Debug|Any CPU.Build.0 = VS2013_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2013_Release|Any CPU.ActiveCfg = VS2013_Release|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2013_Release|Any CPU.Build.0 = VS2013_Release|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2015_Debug|Any CPU.ActiveCfg = VS2015_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2015_Debug|Any CPU.Build.0 = VS2015_Debug|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2015_Release|Any CPU.ActiveCfg = VS2015_Release|Any CPU
+		{B63E4DB4-AA73-419A-B650-20DEF861E94C}.VS2015_Release|Any CPU.Build.0 = VS2015_Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
