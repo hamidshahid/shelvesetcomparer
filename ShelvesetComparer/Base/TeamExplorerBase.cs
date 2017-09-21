@@ -3,7 +3,6 @@ namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics;
     using Microsoft.TeamFoundation.Client;
     using Microsoft.TeamFoundation.Controls;
 
@@ -15,7 +14,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         private bool contextSubscribed;
         private IServiceProvider serviceProvider;
        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Get/set the service provider.

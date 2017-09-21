@@ -30,10 +30,6 @@ namespace WiredTechSolutions.ShelvesetComparer
             this.InitializeComponent();
             this.ParentSection = parentSection;
             this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
-            this.SecondShelvesetUserTextBox.Visibility = ExtensionSettings.Instance.TwoUsersView ? Visibility.Visible : Visibility.Hidden;
-            this.SecondShelvesetUserTextBox.Height = ExtensionSettings.Instance.TwoUsersView ? 25 : 0;
-            this.ShowAsButton.IsChecked = ExtensionSettings.Instance.ShowAsButton;
-            this.TwoUsersView.IsChecked = ExtensionSettings.Instance.TwoUsersView;
             this.DataContext = this;
         }
 
@@ -187,7 +183,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                 
                 if (dte2 != null)
                 {
-                    dte2.ExecuteCommand("Tools.ShelvesetComparer");
+                    dte2.ExecuteCommand("Team.CompareShelvesets");
                 }
             }
             catch (Exception ex)
@@ -236,54 +232,6 @@ namespace WiredTechSolutions.ShelvesetComparer
                     this.ParentSection.ViewShelvesetDetails(shelveset);
                 }
             }
-        }
-
-        /// <summary>
-        /// Event handler for Options Windows link
-        /// </summary>
-        /// <param name="sender">The sender</param>
-        /// <param name="e">The events argument</param>
-        private void ShowOptionsWindow_Click(object sender, RoutedEventArgs e)
-        {
-            this.ShowPanel("option");
-        }
-
-        /// <summary>
-        /// Event Handler for the Show Compare button
-        /// </summary>
-        /// <param name="sender">The sender object.</param>
-        /// <param name="e">The event argument.</param>
-        private void ShowCompareWindow_Click(object sender, RoutedEventArgs e)
-        {
-            this.ShowPanel("select");
-        }
-
-        /// <summary>
-        /// Event handler for the save button
-        /// </summary>
-        /// <param name="sender">The sender object.</param>
-        /// <param name="e">The event argument.</param>
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            ExtensionSettings.Instance.ShowAsButton = this.ShowAsButton.IsChecked.GetValueOrDefault(false);
-            ExtensionSettings.Instance.TwoUsersView = this.TwoUsersView.IsChecked.GetValueOrDefault(false);
-            this.ShowPanel("select");
-        }
-        
-        /// <summary>
-        /// Helper method to switch between option and select panel
-        /// </summary>
-        /// <param name="panelToShow">The name of the panel to show</param>
-        private void ShowPanel(string panelToShow)
-        {
-            bool showOptionsPanel = panelToShow == "option" ? true : false;
-            bool showSelectPanel = panelToShow == "select" ? true : false;
-
-            this.ShelvesetComparisonPanel.Visibility = showSelectPanel ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            this.SelectShelvesetPanel.Visibility = showSelectPanel ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            this.OptionsPanel.Visibility = showOptionsPanel ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            this.SecondShelvesetUserTextBox.Visibility = ExtensionSettings.Instance.TwoUsersView ? Visibility.Visible : Visibility.Hidden;
-            this.SecondShelvesetUserTextBox.Height = ExtensionSettings.Instance.TwoUsersView ? 25 : 0;
         }
     }
 }

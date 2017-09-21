@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Visual Studio extension for comparing shelvesets.")]
 [assembly: AssemblyCompany("Hamid Shahid")]
 [assembly: AssemblyProduct("ShelvesetComparer")]
-[assembly: ComVisible(false)]     
+[assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
 

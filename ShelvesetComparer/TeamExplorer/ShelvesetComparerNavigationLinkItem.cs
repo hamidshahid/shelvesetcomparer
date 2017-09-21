@@ -11,7 +11,8 @@ namespace WiredTechSolutions.ShelvesetComparer
     /// <summary>
     /// The class creates the navigation link for Shelveset Comparer extension.
     /// </summary>
-    [TeamExplorerNavigationItem(ShelvesetComparerNavigationLinkItem.LinkId, 200)]
+    [TeamExplorerNavigationItem(ShelvesetComparerNavigationLinkItem.LinkId, 1500)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ShelvesetComparerNavigationLinkItem : TeamExplorerBaseNavigationItem
     {
         /// <summary>
@@ -28,11 +29,6 @@ namespace WiredTechSolutions.ShelvesetComparer
             : base(serviceProvider)
         {
             this.Text = Resources.TeamExplorerLinkCaption;
-            if (this.CurrentContext != null && this.CurrentContext.HasCollection && this.CurrentContext.HasTeamProject)
-            {
-                this.IsVisible = ExtensionSettings.Instance.ShowAsButton;
-            }
-            
             this.Image = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(Resources.TeamExplorerIconName));
         }
 
@@ -61,14 +57,6 @@ namespace WiredTechSolutions.ShelvesetComparer
         public override void Invalidate()
         {
             base.Invalidate();
-            if (this.CurrentContext != null && this.CurrentContext.HasCollection && this.CurrentContext.HasTeamProject)
-            {
-                this.IsVisible = ExtensionSettings.Instance.ShowAsButton;
-            }
-            else
-            {
-                this.IsVisible = false;
-            }
         }
     }
 }

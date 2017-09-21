@@ -3,8 +3,6 @@ namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
     using System.ComponentModel.Composition;
-    using System.Drawing;
-    using System.Reflection;
     using Microsoft.TeamFoundation.Controls;
     using Microsoft.VisualStudio.Shell;
 
