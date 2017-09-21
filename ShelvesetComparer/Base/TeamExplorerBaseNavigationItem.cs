@@ -2,16 +2,20 @@
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
+    using System.Drawing;
     using Microsoft.TeamFoundation.Controls;
     
     /// <summary>
     /// Team Explorer base navigation item class.
     /// </summary>
-    public class TeamExplorerBaseNavigationItem : TeamExplorerBase, ITeamExplorerNavigationItem
+    public class TeamExplorerBaseNavigationItem : TeamExplorerBase, ITeamExplorerNavigationItem2
     {
         private bool isVisible = true;
         private string text;
-        private System.Drawing.Image image;
+        private Image image;
+        private object icon = null;
+        private int argbColor;
+        private bool isEnabled = true;
 
         public TeamExplorerBaseNavigationItem(IServiceProvider serviceProvider)
         {
@@ -32,7 +36,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
         }
 
-        public System.Drawing.Image Image
+        public Image Image
         {
             get
             {
@@ -57,6 +61,46 @@ namespace WiredTechSolutions.ShelvesetComparer
             {
                 this.isVisible = value;
                 this.RaisePropertyChanged("IsVisible");
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return this.isEnabled;
+            }
+            set
+            {
+                this.isEnabled = value;
+                this.RaisePropertyChanged("IsEnabled");
+            }
+        }
+
+        public int ArgbColor
+        {
+            get
+            {
+                return this.argbColor;
+            }
+
+            set
+            {
+                this.argbColor = value;
+                this.RaisePropertyChanged("argbColor");
+            }
+        }
+
+        public object Icon
+        {
+            get
+            {
+                return icon;
+            }
+            set
+            {
+                icon = value;
+                this.RaisePropertyChanged("Icon");
             }
         }
 

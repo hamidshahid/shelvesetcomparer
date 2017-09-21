@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mtcw="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls"
-                    xmlns:local="clr-namespace:WiredTechSolutions.ShelvesetComparer" >
+                    xmlns:mtcw="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls">
 
   <!-- Theme Independent Colors -->
   <SolidColorBrush x:Key="ItemBrushKey" Color="{Binding Source={x:Static mtcw:TeamFoundationColors.Instance},Path=ItemColor,Mode=OneWay}" />

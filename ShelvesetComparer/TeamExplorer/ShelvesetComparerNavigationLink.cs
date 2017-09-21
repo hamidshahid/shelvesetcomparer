@@ -3,8 +3,6 @@ namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
     using System.ComponentModel.Composition;
-    using System.Drawing;
-    using System.Reflection;
     using Microsoft.TeamFoundation.Controls;
     using Microsoft.VisualStudio.Shell;
 
@@ -28,7 +26,15 @@ namespace WiredTechSolutions.ShelvesetComparer
             : base(serviceProvider)
         {
             this.Text = Resources.TeamExplorerLinkCaption;
-            this.IsVisible = true;
+			if (this.SourceControlType != Microsoft.TeamFoundation.Client.TeamFoundationSourceControlType.Git)
+			{
+				this.IsVisible = true;
+			}
+			else
+			{
+				this.IsVisible = false;
+			}
+
             this.IsEnabled = true;
         }
 
@@ -57,7 +63,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         public override void Invalidate()
         {
             base.Invalidate();
-            if (this.CurrentContext != null && this.CurrentContext.HasCollection && this.CurrentContext.HasTeamProject)
+            if (this.CurrentContext != null && this.CurrentContext.HasCollection && this.CurrentContext.HasTeamProject && this.SourceControlType != Microsoft.TeamFoundation.Client.TeamFoundationSourceControlType.Git)
             {
                 this.IsVisible = true;
             }

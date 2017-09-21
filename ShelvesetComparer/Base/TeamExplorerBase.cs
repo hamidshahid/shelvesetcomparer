@@ -3,19 +3,19 @@ namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics;
     using Microsoft.TeamFoundation.Client;
     using Microsoft.TeamFoundation.Controls;
+	using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 
-    /// <summary>
-    /// Team Explorer extension common base class.
-    /// </summary>
-    public class TeamExplorerBase : IDisposable, INotifyPropertyChanged
+	/// <summary>
+	/// Team Explorer extension common base class.
+	/// </summary>
+	public class TeamExplorerBase : IDisposable, INotifyPropertyChanged
     {
         private bool contextSubscribed;
         private IServiceProvider serviceProvider;
        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Get/set the service provider.
@@ -54,7 +54,21 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
         }
 
-        public T GetService<T>()
+		protected TeamFoundationSourceControlType SourceControlType
+		{
+			get
+			{
+				var gitService = this.GetService<IGitExt>();				
+				if (gitService != null)
+				{	
+					return gitService.ActiveRepositories.Count > 0 ? TeamFoundationSourceControlType.Git : TeamFoundationSourceControlType.TFVC;
+				}
+
+				return TeamFoundationSourceControlType.TFVC;
+			}
+		}
+
+		public T GetService<T>()
         {
             if (this.ServiceProvider != null)
             {
