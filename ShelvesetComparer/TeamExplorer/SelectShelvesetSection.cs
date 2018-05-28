@@ -1,4 +1,4 @@
-﻿// <copyright file="SelectShelvesetSection.cs" company="http://shelvesetcomparer.codeplex.com">Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+﻿// <copyright file="SelectShelvesetSection.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
@@ -135,14 +135,14 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// Refresh the list of shelveset shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        public async System.Threading.Tasks.Task RefreshShelvesets()
+        public async System.Threading.Tasks.Task RefreshShelvesets(bool includePendChange = false)
         {
             var shelvesets = new ObservableCollection<Shelveset>();
 
             // Make the server call asynchronously to avoid blocking the UI
             await Task.Run(() =>
             {
-                FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext, out shelvesets);
+                FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext, includePendChange, out shelvesets);
             });
 
             this.Shelvesets = shelvesets;
@@ -184,7 +184,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="secondUsername">The second user name </param>
         /// <param name="context">The Team foundation server context</param>
         /// <param name="shelveSets">The shelveset list to be returned</param>
-        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, out ObservableCollection<Shelveset> shelveSets)
+        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, bool includePendChange, out ObservableCollection<Shelveset> shelveSets)
         {
             shelveSets = new ObservableCollection<Shelveset>();
             if (context != null && context.HasCollection && context.HasTeamProject)
@@ -206,8 +206,51 @@ namespace WiredTechSolutions.ShelvesetComparer
                             shelveSets.Add(shelveSet);
                         }
                     }
+
+                    if (includePendChange)
+                    {
+                        var pendChangeShelveset = FetchPendingChangeShelveset(context);
+                        if (pendChangeShelveset != null)
+                            shelveSets.Add(FetchPendingChangeShelveset(context));
+                    }
                 }
             }
+        }
+
+
+
+        /// <summary>
+        /// Retrieves the shelveset for pending change for the current user 
+        /// </summary>
+        /// <param name="context">The Team foundation server context</param>
+        private static Shelveset FetchPendingChangeShelveset(ITeamFoundationContext context)
+        {
+            if (context != null && context.HasCollection && context.HasTeamProject)
+            {
+                var vcs = context.TeamProjectCollection.GetService<VersionControlServer>();
+                if (vcs != null)
+                {
+                    var machineName = Environment.MachineName;
+                    var currentUserName = Environment.UserName;
+
+                    var workspace = vcs.GetWorkspace(machineName, currentUserName);
+
+                    var changes = workspace.GetPendingChanges();//we want to shelve all pending changes in the workspace
+
+                    if (changes.Length != 0)
+
+                    {
+
+                        var pendChange = new Shelveset(vcs, "Pending Changes", workspace.OwnerName);
+                        workspace.Shelve(pendChange, changes, ShelvingOptions.Replace);//you can specify to replace existing shelveset, or to remove pending changes from the local workspace with ShelvingOptions
+                        pendChange.CreationDate = DateTime.Now;
+
+                        return pendChange;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

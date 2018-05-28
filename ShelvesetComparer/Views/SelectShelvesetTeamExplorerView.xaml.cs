@@ -1,4 +1,4 @@
-﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="http://shelvesetcomparer.codeplex.com">Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
@@ -78,7 +78,10 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
 
-                await this.ParentSection.RefreshShelvesets();
+                if(this.IncludePendChanges.IsChecked == true)
+                    await this.ParentSection.RefreshShelvesets(true);
+                else
+                    await this.ParentSection.RefreshShelvesets();
                 this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;                
             }
         }
@@ -98,8 +101,11 @@ namespace WiredTechSolutions.ShelvesetComparer
                     this.ShowError("User Account Name or display name could not be found");
                     return;
                 }
-
-                await this.ParentSection.RefreshShelvesets();
+                
+                if (this.IncludePendChanges.IsChecked == true)
+                    await this.ParentSection.RefreshShelvesets(true);
+                else
+                    await this.ParentSection.RefreshShelvesets();
                 this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
             }
         }
@@ -156,7 +162,11 @@ namespace WiredTechSolutions.ShelvesetComparer
         private async void ListButton_Click(object sender, RoutedEventArgs e)
         {
             this.ClearError();
-            await this.ParentSection.RefreshShelvesets();
+            
+            if (this.IncludePendChanges.IsChecked == true)
+                await this.ParentSection.RefreshShelvesets(true);
+            else
+                await this.ParentSection.RefreshShelvesets();
             this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
         }
 

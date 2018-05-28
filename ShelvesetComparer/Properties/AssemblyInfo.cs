@@ -1,4 +1,4 @@
-﻿// <copyright file="AssemblyInfo.cs" company="http://shelvesetcomparer.codeplex.com">Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+﻿// <copyright file="AssemblyInfo.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
 using System;
 using System.Reflection;
 using System.Resources;
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("ShelvesetComparer")]
 [assembly: AssemblyDescription("Visual Studio extension for comparing shelvesets.")]
-[assembly: AssemblyCompany("Hamid Shahid")]
+[assembly: AssemblyCompany("Rajeev Boobna")]
 [assembly: AssemblyProduct("ShelvesetComparer")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
