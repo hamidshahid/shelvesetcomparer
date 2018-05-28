@@ -1,5 +1,5 @@
 ﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
-namespace WiredTechSolutions.ShelvesetComparer
+namespace ShelvesetComparer
 {
     using System;
     using System.Windows;
@@ -182,7 +182,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                 this.ClearError();
                 if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count < 2)
                 {
-                    this.ShowError(WiredTechSolutions.ShelvesetComparer.Resources.ShelvesetNotSelectedErrorMessage);
+                    this.ShowError(ShelvesetComparer.Resources.ShelvesetNotSelectedErrorMessage);
                     return;
                 }
                 

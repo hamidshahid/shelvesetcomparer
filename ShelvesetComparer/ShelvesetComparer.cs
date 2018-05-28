@@ -1,5 +1,5 @@
 ﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
-namespace WiredTechSolutions.ShelvesetComparer
+namespace ShelvesetComparer
 {
     using System;
     using System.ComponentModel.Design;
@@ -10,7 +10,7 @@ namespace WiredTechSolutions.ShelvesetComparer
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class ShelvesetComparer
+    internal sealed class ShelvesetCompare
     {
         /// <summary>
         /// Command ID.
@@ -29,11 +29,11 @@ namespace WiredTechSolutions.ShelvesetComparer
         private readonly Package package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShelvesetComparer"/> class.
+        /// Initializes a new instance of the <see cref="ShelvesetCompare"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private ShelvesetComparer(Package package)
+        private ShelvesetCompare(Package package)
         {
             if (package == null)
             {
@@ -54,7 +54,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static ShelvesetComparer Instance
+        public static ShelvesetCompare Instance
         {
             get;
             private set;
@@ -77,7 +77,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            Instance = new ShelvesetComparer(package);
+            Instance = new ShelvesetCompare(package);
         }
 
         /// <summary>

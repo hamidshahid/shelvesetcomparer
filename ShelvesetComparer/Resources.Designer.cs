@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WiredTechSolutions.ShelvesetComparer {
+namespace ShelvesetComparer {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WiredTechSolutions.ShelvesetComparer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WiredTechSolutions.ShelvesetComparer.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShelvesetComparer.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -115,7 +115,7 @@ namespace WiredTechSolutions.ShelvesetComparer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WiredTechSolutions.ShelvesetComparer.Resources.grayscale.png.
+        ///   Looks up a localized string similar to ShelvesetComparer.Resources.grayscale.png.
         /// </summary>
         internal static string TeamExplorerIconName {
             get {

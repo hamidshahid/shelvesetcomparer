@@ -136,7 +136,7 @@
     <value>The shelvesets has {0} file(s) in common. {1} file(s) have the same content. {2} file(s) are different. Double click on the common files to compare contents.</value>
   </data>
   <data name="TeamExplorerIconName" xml:space="preserve">
-    <value>WiredTechSolutions.ShelvesetComparer.Resources.grayscale.png</value>
+    <value>ShelvesetComparer.Resources.grayscale.png</value>
   </data>
   <data name="TeamExplorerLinkCaption" xml:space="preserve">
     <value>Compare Shelvesets</value>
