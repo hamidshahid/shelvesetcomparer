@@ -17,6 +17,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// </summary>
         public const int CommandId = 0x0100;
 
+
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
