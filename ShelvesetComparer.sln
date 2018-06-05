@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShelvesetComparer", "ShelvesetComparer\ShelvesetComparer.csproj", "{7C432ACE-1D8C-4E09-A18F-6B8B1C96D445}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompareShelvesets", "ShelvesetComparer\CompareShelvesets.csproj", "{7C432ACE-1D8C-4E09-A18F-6B8B1C96D445}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

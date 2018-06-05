@@ -23,8 +23,8 @@
     <ProjectGuid>{7C432ACE-1D8C-4E09-A18F-6B8B1C96D445}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ShelvesetComparer</RootNamespace>
-    <AssemblyName>ShelvesetComparer</AssemblyName>
+    <RootNamespace>CompareShelvesets</RootNamespace>
+    <AssemblyName>CompareShelvesets</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -248,8 +248,14 @@
     <EmbeddedResource Include="Resources\grayscale.png" />
     <EmbeddedResource Include="Resources\Images.png" />
     <EmbeddedResource Include="Resources\magnifier.png" />
-    <Content Include="Resources\Package.ico" />
-    <EmbeddedResource Include="Resources\PreviewImage.png" />
+    <Content Include="Resources\Package.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\PreviewImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\ResourceDictionary.xaml">

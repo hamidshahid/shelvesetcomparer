@@ -1,5 +1,5 @@
-﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
-namespace ShelvesetComparer
+﻿// <copyright file="SelectShelvesetTeamExplorerView.xaml.cs" company="https://github.com/rajeevboobna/CompareShelvesets">Copyright https://github.com/rajeevboobna/CompareShelvesets. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+namespace CompareShelvesets
 {
     using System;
     using System.Windows;
@@ -78,10 +78,7 @@ namespace ShelvesetComparer
                     return;
                 }
 
-                if(this.IncludePendChanges.IsChecked == true)
-                    await this.ParentSection.RefreshShelvesets(true);
-                else
-                    await this.ParentSection.RefreshShelvesets();
+                await this.ParentSection.RefreshShelvesets();
                 this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;                
             }
         }
@@ -102,10 +99,7 @@ namespace ShelvesetComparer
                     return;
                 }
                 
-                if (this.IncludePendChanges.IsChecked == true)
-                    await this.ParentSection.RefreshShelvesets(true);
-                else
-                    await this.ParentSection.RefreshShelvesets();
+                await this.ParentSection.RefreshShelvesets();
                 this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
             }
         }
@@ -163,10 +157,7 @@ namespace ShelvesetComparer
         {
             this.ClearError();
             
-            if (this.IncludePendChanges.IsChecked == true)
-                await this.ParentSection.RefreshShelvesets(true);
-            else
-                await this.ParentSection.RefreshShelvesets();
+            await this.ParentSection.RefreshShelvesets();
             this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
         }
 
@@ -180,9 +171,9 @@ namespace ShelvesetComparer
             try
             {
                 this.ClearError();
-                if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count < 2)
+                if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count != 2)
                 {
-                    this.ShowError(ShelvesetComparer.Resources.ShelvesetNotSelectedErrorMessage);
+                    this.ShowError(CompareShelvesets.Resources.ShelvesetsNotSelectedErrorMessage);
                     return;
                 }
                 
@@ -191,6 +182,40 @@ namespace ShelvesetComparer
                 var secondSheleveset = this.ListShelvesets.SelectedItems[1] as Shelveset;
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
                 
+                if (dte2 != null)
+                {
+                    dte2.ExecuteCommand("Team.CompareShelvesets");
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Event Handler for the compare button.
+        /// </summary>
+        /// <param name="sender">The compare button</param>
+        /// <param name="e">Event parameters</param>
+        private void CompareWithPendChangeButtons_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.ClearError();
+                if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count != 1)
+                {
+                    this.ShowError(CompareShelvesets.Resources.ShelvesetNotSelectedErrorMessage);
+                    return;
+                }
+
+                var pendChangeShelveset = this.ParentSection.FetchPendingChangeShelveset(this.ParentSection.Context);
+                
+                var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
+                var firstSheleveset = this.ListShelvesets.SelectedItems[0] as Shelveset;
+                var secondSheleveset = pendChangeShelveset;
+                ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
+
                 if (dte2 != null)
                 {
                     dte2.ExecuteCommand("Team.CompareShelvesets");

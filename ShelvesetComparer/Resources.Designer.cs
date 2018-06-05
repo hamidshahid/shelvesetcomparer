@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShelvesetComparer {
+namespace CompareShelvesets {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ShelvesetComparer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShelvesetComparer.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CompareShelvesets.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -97,11 +97,20 @@ namespace ShelvesetComparer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select two shelvesets to compare..
+        ///   Looks up a localized string similar to Please select one shelvesets to compare..
         /// </summary>
         internal static string ShelvesetNotSelectedErrorMessage {
             get {
                 return ResourceManager.GetString("ShelvesetNotSelectedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select two shelvesets to compare..
+        /// </summary>
+        internal static string ShelvesetsNotSelectedErrorMessage {
+            get {
+                return ResourceManager.GetString("ShelvesetsNotSelectedErrorMessage", resourceCulture);
             }
         }
         
@@ -115,7 +124,7 @@ namespace ShelvesetComparer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ShelvesetComparer.Resources.grayscale.png.
+        ///   Looks up a localized string similar to CompareShelvesets.Resources.grayscale.png.
         /// </summary>
         internal static string TeamExplorerIconName {
             get {

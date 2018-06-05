@@ -1,5 +1,5 @@
-﻿// <copyright file="SelectShelvesetSection.cs" company="https://github.com/rajeevboobna/shelvesetcomparer">Copyright https://github.com/rajeevboobna/shelvesetcomparer. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
-namespace ShelvesetComparer
+﻿// <copyright file="SelectShelvesetSection.cs" company="https://github.com/rajeevboobna/CompareShelvesets">Copyright https://github.com/rajeevboobna/CompareShelvesets. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+namespace CompareShelvesets
 {
     using System;
     using System.Collections.ObjectModel;
@@ -135,14 +135,14 @@ namespace ShelvesetComparer
         /// Refresh the list of shelveset shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        public async System.Threading.Tasks.Task RefreshShelvesets(bool includePendChange = false)
+        public async System.Threading.Tasks.Task RefreshShelvesets()
         {
             var shelvesets = new ObservableCollection<Shelveset>();
 
             // Make the server call asynchronously to avoid blocking the UI
             await Task.Run(() =>
             {
-                FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext, includePendChange, out shelvesets);
+                FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext, out shelvesets);
             });
 
             this.Shelvesets = shelvesets;
@@ -184,7 +184,7 @@ namespace ShelvesetComparer
         /// <param name="secondUsername">The second user name </param>
         /// <param name="context">The Team foundation server context</param>
         /// <param name="shelveSets">The shelveset list to be returned</param>
-        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, bool includePendChange, out ObservableCollection<Shelveset> shelveSets)
+        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, out ObservableCollection<Shelveset> shelveSets)
         {
             shelveSets = new ObservableCollection<Shelveset>();
             if (context != null && context.HasCollection && context.HasTeamProject)
@@ -206,13 +206,6 @@ namespace ShelvesetComparer
                             shelveSets.Add(shelveSet);
                         }
                     }
-
-                    if (includePendChange)
-                    {
-                        var pendChangeShelveset = FetchPendingChangeShelveset(context);
-                        if (pendChangeShelveset != null)
-                            shelveSets.Add(FetchPendingChangeShelveset(context));
-                    }
                 }
             }
         }
@@ -223,7 +216,7 @@ namespace ShelvesetComparer
         /// Retrieves the shelveset for pending change for the current user 
         /// </summary>
         /// <param name="context">The Team foundation server context</param>
-        private static Shelveset FetchPendingChangeShelveset(ITeamFoundationContext context)
+        internal Shelveset FetchPendingChangeShelveset(ITeamFoundationContext context)
         {
             if (context != null && context.HasCollection && context.HasTeamProject)
             {
