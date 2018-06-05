@@ -29,9 +29,9 @@
           <TextBlock>Enter User account to list shelvesets (If you are comparing shelvesets of two users)</TextBlock>
         </tfscontrols:LabeledTextBox.ToolTip>
       </tfscontrols:LabeledTextBox>
-      <Button Name="ListButton" HorizontalAlignment="Right" Width="35" ToolTip="List all changesets for selecte users" Height="10"  Content="List" Click="ListButton_Click" />
-      <Button Name="CompareButtons" HorizontalAlignment="Right" Width="35" ToolTip="Compare the two selected shelvesets" Height="10"  Content="Compare" Click="CompareButtons_Click" Margin="10"/>
-      <Button Name="CompareWithPendingChange" HorizontalAlignment="Right" Width="35" ToolTip="Compare the selected shelveset with Pending change" Height="10"  Content="Compare with Pending Change" Click="CompareWithPendChangeButtons_Click" Margin="10"/>
+      <Button Name="ListButton" HorizontalAlignment="Right" Width="35" ToolTip="List all changesets for selecte users" Height="10"  Content="List" Click="ListButton_Click" Margin="5"/>
+      <Button Name="CompareButtons" HorizontalAlignment="Right" Width="Auto" ToolTip="Compare the two selected shelvesets" Height="10"  Content="Compare Shelvesets" Click="CompareButtons_Click" Margin="5"/>
+      <Button Name="CompareWithPendingChange" HorizontalAlignment="Right" Width="Auto" ToolTip="Compare the selected shelveset with Pending change" Height="10"  Content="Compare Pending" Click="CompareWithPendChangeButtons_Click" Margin="5"/>
       <WrapPanel Orientation="Horizontal" Grid.Row="0" Margin="0,10" HorizontalAlignment="Stretch" Visibility="Hidden" Name="ErrorPanel" Background="LightYellow" >
         <TextBlock HorizontalAlignment="Stretch" Name="ErrorText"/>
       </WrapPanel>
@@ -58,8 +58,8 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn extensions:GridViewSorter.PropertyName="CreationDate">
-              <GridViewColumnHeader Content="Created On" HorizontalAlignment="Stretch" Tag="Date"/>
+                        <GridViewColumn extensions:GridViewSorter.PropertyName="CreationDate">
+                            <GridViewColumnHeader Content="Created On" HorizontalAlignment="Stretch" Tag="Date"/>
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding Path=CreationDate, StringFormat={}{0:ddd dd MMM HH:mm}}"/>
