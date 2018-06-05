@@ -170,6 +170,8 @@ namespace CompareShelvesets
         {
             try
             {
+                BusyIndicator.IsBusy = true;
+
                 this.ClearError();
                 if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count != 2)
                 {
@@ -186,6 +188,8 @@ namespace CompareShelvesets
                 {
                     dte2.ExecuteCommand("Team.CompareShelvesets");
                 }
+
+                BusyIndicator.IsBusy = false;
             }
             catch (Exception ex)
             {
@@ -202,6 +206,8 @@ namespace CompareShelvesets
         {
             try
             {
+                BusyIndicator.IsBusy = true;
+
                 this.ClearError();
                 if (this.ListShelvesets.SelectedItems != null && this.ListShelvesets.SelectedItems.Count != 1)
                 {
@@ -220,6 +226,8 @@ namespace CompareShelvesets
                 {
                     dte2.ExecuteCommand("Team.CompareShelvesets");
                 }
+
+                BusyIndicator.IsBusy = false;
             }
             catch (Exception ex)
             {
