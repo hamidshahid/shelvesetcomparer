@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CompareShelvesets")]
-[assembly: AssemblyDescription("Visual Studio extension for comparing shelvesets / shelveset and Pending changes.")]
+[assembly: AssemblyDescription("Visual Studio extension for comparing shelvesets.")]
 [assembly: AssemblyCompany("Rajeev Boobna")]
 [assembly: AssemblyProduct("CompareShelvesets")]
 [assembly: ComVisible(false)]

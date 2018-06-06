@@ -12,7 +12,8 @@
     <UserControl.Resources>
         <ResourceDictionary Source="/CompareShelvesets;component/Resources/ResourceDictionary.xaml"/>
     </UserControl.Resources>
-        <Grid Margin="6,6,6,6" >
+
+  <Grid Margin="6,6,6,6" >
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -32,6 +33,7 @@
         <tfscontrols:LabeledTextBox.ToolTip>
           <TextBlock>
             Enter User account to list shelvesets
+            <Image Source="/ShelvsetComparer;component/Resources/magnifier.png" />      
           </TextBlock>
         </tfscontrols:LabeledTextBox.ToolTip>
       </tfscontrols:LabeledTextBox>
