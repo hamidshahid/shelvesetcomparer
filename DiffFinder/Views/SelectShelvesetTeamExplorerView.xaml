@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="DiffFinder.SelectShelvesetTeamExplorerView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mvvm="clr-namespace:Microsoft.TeamFoundation.MVVM;assembly=Microsoft.TeamFoundation.Controls"
+      xmlns:tfscontrols="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls"      
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      xmlns:extensions="clr-namespace:DiffFinder"
+      DataContext="{Binding Source={RelativeSource Self}}">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/DiffFinder;component/Resources/ResourceDictionary.xaml"/>
+  </UserControl.Resources>
+  <Grid >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>    
+    <WrapPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Stretch" Name="SelectShelvesetPanel">
+      <tfscontrols:LabeledTextBox AcceptsReturn="False" Name="FirstShelvesetUserTextBox" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type WrapPanel}, Mode=FindAncestor}}" KeyUp="FirstShelvesetUserTextBox_KeyUp" HorizontalAlignment="Stretch" HintText="Enter Shelveset Owner" Text="{Binding Path=ParentSection.FirstUserAccountName, Mode=TwoWay}" Height="25">
+        <tfscontrols:LabeledTextBox.ToolTip>
+          <TextBlock>Enter User account to list shelvesets.</TextBlock>
+        </tfscontrols:LabeledTextBox.ToolTip>
+      </tfscontrols:LabeledTextBox>
+      <tfscontrols:LabeledTextBox AcceptsReturn="false" Name="SecondShelvesetUserTextBox" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type WrapPanel}, Mode=FindAncestor}}" KeyUp="SecondShelvesetUserTextBox_KeyUp" HorizontalAlignment="Stretch" HintText="Enter Shelveset Owner (If you want to compare shelvesets of different users)" Text="{Binding Path=ParentSection.SecondUserAccountName, Mode=TwoWay}" Height="25" Visibility="{Binding Path=ShowSecondUser}">
+        <tfscontrols:LabeledTextBox.ToolTip>
+          <TextBlock>Enter User account to list shelvesets (If you are comparing shelvesets of two users)</TextBlock>
+        </tfscontrols:LabeledTextBox.ToolTip>
+      </tfscontrols:LabeledTextBox>
+      <Button Name="ListButton" HorizontalAlignment="Right" Width="35" ToolTip="List all changesets for selecte users" Height="10"  Content="List" Click="ListButton_Click" Margin="5"/>
+      <Button Name="CompareButtons" HorizontalAlignment="Right" Width="Auto" ToolTip="Diff between the two selected shelvesets" Height="10"  Content="Diff Shelvesets" Click="CompareButtons_Click" Margin="5"/>
+      <Button Name="CompareWithPendingChange" HorizontalAlignment="Right" Width="Auto" ToolTip="Diff between the selected shelveset with Pending change" Height="10"  Content="Diff Pending" Click="CompareWithPendChangeButtons_Click" Margin="5"/>
+      <WrapPanel Orientation="Horizontal" Grid.Row="0" Margin="0,10" HorizontalAlignment="Stretch" Visibility="Hidden" Name="ErrorPanel" Background="LightYellow" >
+        <TextBlock HorizontalAlignment="Stretch" Name="ErrorText"/>
+      </WrapPanel>
+    </WrapPanel>
+
+    <WrapPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Stretch" Name="ShelvesetComparisonPanel">
+      <Line Stretch="Fill" Stroke="Gray" X2="1" Height="20"/>
+      
+      <ListView x:Name="ListShelvesets" ItemsSource="{Binding Path=ParentSection.Shelvesets}" BorderThickness="0"
+                    SelectionMode="Multiple" ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                    mvvm:FrameworkElementBehaviors.IgnoreMouseWheel="True" 
+                    MouseDoubleClick="ListShelvesets_MouseDoubleClick" KeyUp="ListShelvesets_KeyUp"
+                    SelectionChanged="ListShelvesetsSelectionChanged"
+                    extensions:GridViewSorter.AutoSort="True"
+                    extensions:GridViewSorter.ShowSortGlyph="True"
+                >
+        <ListView.View>
+          <GridView>
+            <GridViewColumn extensions:GridViewSorter.PropertyName="Name">
+              <GridViewColumnHeader Content="Shelveset Name" HorizontalAlignment="Stretch" Tag="Name"/>
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path=Name}" />
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn extensions:GridViewSorter.PropertyName="CreationDate">
+              <GridViewColumnHeader Content="Created On" HorizontalAlignment="Stretch" Tag="Date"/>
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path=CreationDate, StringFormat={}{0:ddd dd MMM HH:mm}}"/>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn extensions:GridViewSorter.PropertyName="OwnerDisplayName">
+              <GridViewColumnHeader Content="Owner" HorizontalAlignment="Stretch" Tag="OwnerName"/>
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path=OwnerDisplayName}"/>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+          </GridView>
+        </ListView.View>
+        <ListView.ItemContainerStyle>
+          <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+            <Setter Property="ToolTip">
+              <Setter.Value>
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,6,3" Text="Creation Date:" FontWeight="Bold"/>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,0,3" Text="{Binding Path=CreationDate, StringFormat={}{0:ddd dd MMM HH:mm}}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,6,3" Text="Comment:" FontWeight="Bold"/>
+                  <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,3" Text="{Binding Path=Comment}"/>
+                </Grid>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </ListView.ItemContainerStyle>
+      </ListView>
+    </WrapPanel>
+  </Grid>
+</UserControl>
+  
