@@ -133,7 +133,7 @@ namespace CompareShelvesets {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compare Shelvesets.
+        ///   Looks up a localized string similar to Diff Finder.
         /// </summary>
         internal static string TeamExplorerLinkCaption {
             get {
@@ -142,7 +142,7 @@ namespace CompareShelvesets {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shelveset Comparer.
+        ///   Looks up a localized string similar to Diff Finder.
         /// </summary>
         internal static string ToolWindowTitle {
             get {

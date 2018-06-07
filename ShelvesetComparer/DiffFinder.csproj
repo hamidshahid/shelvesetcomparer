@@ -23,8 +23,8 @@
     <ProjectGuid>{7C432ACE-1D8C-4E09-A18F-6B8B1C96D445}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CompareShelvesets</RootNamespace>
-    <AssemblyName>CompareShelvesets</AssemblyName>
+    <RootNamespace>DiffFinder</RootNamespace>
+    <AssemblyName>DiffFinder</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>

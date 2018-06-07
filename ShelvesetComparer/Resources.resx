@@ -142,9 +142,9 @@
     <value>CompareShelvesets.Resources.grayscale.png</value>
   </data>
   <data name="TeamExplorerLinkCaption" xml:space="preserve">
-    <value>Compare Shelvesets</value>
+    <value>Diff Finder</value>
   </data>
   <data name="ToolWindowTitle" xml:space="preserve">
-    <value>Shelveset Comparer</value>
+    <value>Diff Finder</value>
   </data>
 </root>
