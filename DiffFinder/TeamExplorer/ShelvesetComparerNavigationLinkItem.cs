@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Reflection;
+using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
