@@ -2,6 +2,7 @@
 
 using EnvDTE;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
@@ -196,7 +197,11 @@ namespace DiffFinder
                     return;
                 }
 
-                var pendChangeShelveset = this.ParentSection.FetchPendingChangeShelveset(this.ParentSection.Context);
+                // get workspace from page
+                var parent = this.ParentSection;
+                var te = parent.GetService<ITeamExplorer>();
+                var page = te?.CurrentPage?.GetExtensibilityService(typeof(ShelvesetComparerPage)) as ShelvesetComparerPage;
+                var pendChangeShelveset = parent.FetchPendingChangeShelveset(this.ParentSection.Context, page?.CurrentWorkspace);
                 
                 var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
                 var firstSheleveset = this.ListShelvesets.SelectedItems[0] as Shelveset;

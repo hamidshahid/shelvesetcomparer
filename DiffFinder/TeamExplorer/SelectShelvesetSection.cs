@@ -222,7 +222,7 @@ namespace DiffFinder
         /// Retrieves the shelveset for pending change for the current user 
         /// </summary>
         /// <param name="context">The Team foundation server context</param>
-        internal Shelveset FetchPendingChangeShelveset(ITeamFoundationContext context)
+        internal Shelveset FetchPendingChangeShelveset(ITeamFoundationContext context, Workspace ws = null)
         {
             if (context != null && context.HasCollection && context.HasTeamProject)
             {
@@ -232,12 +232,11 @@ namespace DiffFinder
                     var machineName = Environment.MachineName;
                     var currentUserName = Environment.UserName;
 
-                    var workspace = vcs.GetWorkspace(machineName, currentUserName);
+                    var workspace = ws ?? vcs.GetWorkspace(machineName, currentUserName);
 
                     var changes = workspace.GetPendingChanges();//we want to shelve all pending changes in the workspace
 
                     if (changes.Length != 0)
-
                     {
 
                         var pendChange = new Shelveset(vcs, "Pending Changes", workspace.OwnerName);
