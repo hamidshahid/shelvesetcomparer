@@ -45,9 +45,9 @@
       </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource TextBlockStyle}">
-          <Run FontSize="14">First Shelveset:</Run> <Run FontWeight="Bold" Text="{Binding ComparisonModel.FirstShelvesetName, ElementName=DifFinder}"/>
+          <Run FontSize="14">First Shelveset:</Run> <TextBox FontWeight="Bold" Text="{Binding ComparisonModel.FirstShelvesetName, ElementName=DifFinder}" IsManipulationEnabled="False" Style="{StaticResource TextBoxStyle}"/>
           <LineBreak/>
-          <Run FontSize="14">Second Shelveset:</Run> <Run FontWeight="Bold" Text="{Binding ComparisonModel.SecondShelvesetName, ElementName=DifFinder}"/>
+          <Run FontSize="14">Second Shelveset:</Run> <TextBox FontWeight="Bold" Text="{Binding ComparisonModel.SecondShelvesetName, ElementName=DifFinder}" IsManipulationEnabled="False" Style="{StaticResource TextBoxStyle}"/>
         </TextBlock>
 
       <TextBlock Grid.Column="1" Style="{StaticResource TextBlockStyle}">
