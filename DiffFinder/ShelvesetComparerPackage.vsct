@@ -39,6 +39,14 @@
       <Group guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidVSTeamTopMenu" id="IDM_VS_MENU_TEAM"/>
       </Group>
+
+        <Group guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup2" priority="0x0600">
+            <Parent guid="guidVSTeamTopDropDownMenu" id="IDM_VS_TEAM_DROPDOWN"/>
+        </Group>
+
+        <!--<Group guid="guidShelvesetComparerPackageCmdSet2" id="MyMenuGroup2" priority="0x0600">
+            <Parent guid="guidVSTeamTopDropDownMenu" id="IDM_VS_TEAM_DROPDOWN"/>
+        </Group>-->
     </Groups>
 
     <!--Buttons section. -->
@@ -53,19 +61,32 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0100" type="Button">
-        <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup" />
         <Strings>
           <ButtonText>Diff Finder: Results</ButtonText>
         </Strings>
       </Button>
 	    <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0101" type="Button">
-        <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup" />
         <Strings>
           <ButtonText>Diff Finder: Select</ButtonText>
         </Strings>
       </Button>
+      
     </Buttons>
+
   </Commands>
+
+    <CommandPlacements>
+        <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0100" >
+            <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup"/>
+        </CommandPlacement>
+        <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0100" >
+            <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup"/>
+        </CommandPlacement>
+
+        <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0100" >
+            <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup2"/>
+        </CommandPlacement>
+    </CommandPlacements>
 
   <Symbols>
     <!-- This is the package guid. -->
@@ -74,12 +95,18 @@
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidShelvesetComparerPackageCmdSet" value="{b8e98565-7b6d-4d64-b51d-97fe5e56c5ec}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="MyMenuGroup2" value="0x1021" />
+
       <IDSymbol name="ShelvesetComparerResuldId" value="0x0100" />
       <IDSymbol name="ShelvesetComparerTeamExplorerViewId" value="0x0200" />
     </GuidSymbol>
 	  
     <GuidSymbol name="guidVSTeamTopMenu" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
       <IDSymbol name="IDM_VS_MENU_TEAM" value="1792" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidVSTeamTopDropDownMenu" value="{0A014553-A0AA-46DD-8D6B-B8E3178CA435}">
+      <IDSymbol name="IDM_VS_TEAM_DROPDOWN" value="4098" />
     </GuidSymbol>    
   </Symbols>
 </CommandTable>

@@ -66,6 +66,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceProviderExtension.cs" />
     <Compile Include="ShelvesetComparer.cs" />
     <Compile Include="ShelvesetComparerPackage.cs" />
     <Compile Include="TeamExplorer\SelectShelvesetSection.cs" />
@@ -148,7 +149,7 @@
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Controls, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReferenceVS2017\Microsoft.TeamFoundation.VersionControl.Controls.dll</HintPath>
+      <HintPath>..\ReferenceVS2019\Microsoft.TeamFoundation.VersionControl.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>

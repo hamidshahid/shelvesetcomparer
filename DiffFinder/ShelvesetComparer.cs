@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
+using Microsoft.TeamFoundation.Controls;
+using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
@@ -43,7 +45,7 @@ namespace DiffFinder
 
             this.package = package;
 
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            OleMenuCommandService commandService = this.ServiceProvider.GetService<IMenuCommandService, OleMenuCommandService>();
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, ShelvesetComparerResuldId);
@@ -123,12 +125,16 @@ namespace DiffFinder
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerTeamExplorerViewIdMenuItemCallback(object sender, EventArgs e)
         {
-            try
+             try
             {
-                ITeamExplorer teamExplorer = GetService<ITeamExplorer>();
+                ITeamExplorer teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
                 if (teamExplorer != null)
                 {
-                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
+                    teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.PendingChanges), null);
+                    var pendingChangesExt = teamExplorer.CurrentPage?.GetExtensibilityService(typeof(IPendingChangesExt)) as IPendingChangesExt;
+                    var ws = pendingChangesExt?.Workspace;
+
+                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), ws);
                 }
             }
             catch (Exception ex)
