@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
+using Microsoft.TeamFoundation.Controls;
+using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
