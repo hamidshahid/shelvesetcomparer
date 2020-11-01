@@ -4,6 +4,7 @@ namespace WiredTechSolutions.ShelvesetComparer
     using System;
     using System.ComponentModel.Design;
     using System.Globalization;
+    using Microsoft.TeamFoundation.Controls;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
 
@@ -15,7 +16,8 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int ShelvesetComparerResuldId = 0x0100;
+        public const int ShelvesetComparerTeamExplorerViewId = 0x0200;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -44,8 +46,12 @@ namespace WiredTechSolutions.ShelvesetComparer
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
-                var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
+                var menuCommandID = new CommandID(CommandSet, ShelvesetComparerResuldId);
+                var menuItem = new MenuCommand(this.ShelvesetComparerResuldIdMenuItemCallback, menuCommandID);
+                commandService.AddCommand(menuItem);
+
+                menuCommandID = new CommandID(CommandSet, ShelvesetComparerTeamExplorerViewId);
+                menuItem = new MenuCommand(this.ShelvesetComparerTeamExplorerViewIdMenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
         }
@@ -86,7 +92,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void MenuItemCallback(object sender, EventArgs e)
+        private void ShelvesetComparerResuldIdMenuItemCallback(object sender, EventArgs e)
         {
             this.ShowToolWindow(sender, e);
         }
@@ -106,6 +112,39 @@ namespace WiredTechSolutions.ShelvesetComparer
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             windowFrame.Show();
+        }
+
+        /// <summary>
+        /// This function is the callback used to execute the command when the menu item is clicked.
+        /// See the constructor to see how the menu item is associated with this function using
+        /// OleMenuCommandService service and MenuCommand class.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event args.</param>
+        private void ShelvesetComparerTeamExplorerViewIdMenuItemCallback(object sender, EventArgs e)
+        {
+            try
+            {
+                ITeamExplorer teamExplorer = GetService<ITeamExplorer>();
+                if (teamExplorer != null)
+                {
+                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
+                }
+            }
+            catch (Exception ex)
+            {
+                //this.ShowNotification(ex.Message, NotificationType.Error);
+            }
+        }
+
+        public T GetService<T>()
+        {
+            if (this.ServiceProvider != null)
+            {
+                return (T)this.ServiceProvider.GetService(typeof(T));
+            }
+
+            return default(T);
         }
     }
 }

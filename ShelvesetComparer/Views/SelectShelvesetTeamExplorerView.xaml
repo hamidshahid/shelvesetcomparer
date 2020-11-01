@@ -44,7 +44,7 @@
                     mvvm:FrameworkElementBehaviors.IgnoreMouseWheel="True" 
                     MouseDoubleClick="ListShelvesets_MouseDoubleClick" KeyUp="ListShelvesets_KeyUp"
                     SelectionChanged="ListShelvesetsSelectionChanged"
-                    extensions:GridViewSorter.AutoSort="True"
+                    extensions:GridViewSorter.AutoSort="False"
                     extensions:GridViewSorter.ShowSortGlyph="True"
                 >
         <ListView.View>
@@ -61,7 +61,7 @@
               <GridViewColumnHeader Content="Created On" HorizontalAlignment="Stretch" Tag="Date"/>
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Path=CreationDate, StringFormat={}{0:ddd dd MMM HH:mm}}"/>
+                  <TextBlock Text="{Binding Path=CreationDate, StringFormat={}{0:g}}"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
