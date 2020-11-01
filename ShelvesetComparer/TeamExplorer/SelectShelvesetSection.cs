@@ -2,9 +2,11 @@
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows.Documents;
     using Microsoft.TeamFoundation.Client;
     using Microsoft.TeamFoundation.Controls;
     using Microsoft.TeamFoundation.VersionControl.Client;
@@ -18,7 +20,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Contains the shelveset list
         /// </summary>
-        private ObservableCollection<Shelveset> shelvesets;
+        private ObservableCollection<ShelvesetForView> shelvesets;
 
         /// <summary>
         /// Initializes a new instance of the SelectShelvesetSection class.
@@ -31,7 +33,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             this.IsVisible = true;
             this.IsExpanded = true;
             this.IsBusy = false;
-            this.shelvesets = new ObservableCollection<Shelveset>();
+            this.shelvesets = new ObservableCollection<ShelvesetForView>();
             this.SectionContent = new SelectShelvesetTeamExplorerView(this);
         }
 
@@ -48,7 +50,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Gets or sets the shelveset list
         /// </summary>
-        public ObservableCollection<Shelveset> Shelvesets
+        public ObservableCollection<ShelvesetForView> Shelvesets
         {
             get
             {
@@ -137,7 +139,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
         public async System.Threading.Tasks.Task RefreshShelvesets()
         {
-            var shelvesets = new ObservableCollection<Shelveset>();
+            var shelvesets = new ObservableCollection<ShelvesetForView>();
 
             // Make the server call asynchronously to avoid blocking the UI
             await Task.Run(() =>
@@ -184,9 +186,9 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="secondUsername">The second user name </param>
         /// <param name="context">The Team foundation server context</param>
         /// <param name="shelveSets">The shelveset list to be returned</param>
-        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, out ObservableCollection<Shelveset> shelveSets)
+        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, out ObservableCollection<ShelvesetForView> shelveSets)
         {
-            shelveSets = new ObservableCollection<Shelveset>();
+            shelveSets = new ObservableCollection<ShelvesetForView>();
             if (context != null && context.HasCollection && context.HasTeamProject)
             {
                 var vcs = context.TeamProjectCollection.GetService<VersionControlServer>();
@@ -195,7 +197,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     string user = string.IsNullOrWhiteSpace(userName) ? vcs.AuthorizedUser : userName;
                     foreach (var shelveSet in vcs.QueryShelvesets(null, user).OrderByDescending(s => s.CreationDate))
                     {
-                        shelveSets.Add(shelveSet);
+                        shelveSets.Add(new ShelvesetForView(shelveSet));
                     }
 
                     if (!string.IsNullOrWhiteSpace(secondUsername) && secondUsername != userName)
@@ -203,11 +205,20 @@ namespace WiredTechSolutions.ShelvesetComparer
                         user = string.IsNullOrWhiteSpace(secondUsername) ? vcs.AuthorizedUser : secondUsername;
                         foreach (var shelveSet in vcs.QueryShelvesets(null, user).OrderByDescending(s => s.CreationDate))
                         {
-                            shelveSets.Add(shelveSet);
+                            shelveSets.Add(new ShelvesetForView(shelveSet));
                         }
                     }
                 }
             }
+#if DEBUG
+            else
+            {
+                for (var idx = 0; idx < 1111; idx++)
+                {
+                    shelveSets.Add(new ShelvesetForView("Shelveset" + idx, new DateTime(2020, idx % 12 + 1, idx % 28 + 1), "Owner" + idx));
+                }
+            }
+#endif
         }
 
         /// <summary>
