@@ -52,10 +52,16 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerId" priority="0x0100" type="Button">
+      <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0100" type="Button">
         <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup" />
         <Strings>
-          <ButtonText>Compare Shelvesets</ButtonText>
+          <ButtonText>Compare Shelvesets: Results</ButtonText>
+        </Strings>
+      </Button>
+	  <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0101" type="Button">
+        <Parent guid="guidShelvesetComparerPackageCmdSet" id="MyMenuGroup" />
+        <Strings>
+          <ButtonText>Compare Shelvesets: Select</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -68,8 +74,10 @@
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidShelvesetComparerPackageCmdSet" value="{b8e98565-7b6d-4d64-b51d-97fe5e56c5ec}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="ShelvesetComparerId" value="0x0100" />
+      <IDSymbol name="ShelvesetComparerResuldId" value="0x0100" />
+      <IDSymbol name="ShelvesetComparerTeamExplorerViewId" value="0x0200" />
     </GuidSymbol>
+	  
     <GuidSymbol name="guidVSTeamTopMenu" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
       <IDSymbol name="IDM_VS_MENU_TEAM" value="1792" />
     </GuidSymbol>    
