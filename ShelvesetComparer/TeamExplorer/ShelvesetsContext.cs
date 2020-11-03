@@ -12,6 +12,6 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Gets or sets the list of Shelveset.
         /// </summary>
-        public ObservableCollection<ShelvesetForView> Shelvesets { get; set; }
+        public ObservableCollection<ShelvesetViewModel> Shelvesets { get; set; }
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="TeamExplorer\ShelvesetComparerPage.cs" />
     <Compile Include="TeamExplorer\ShelvesetForView.cs" />
     <Compile Include="TeamExplorer\ShelvesetsContext.cs" />
+    <Compile Include="ViewExtensions\UserControlMaxHeightMultiValueConverter.cs" />
     <Compile Include="ViewExtensions\GridViewSorter.cs" />
     <Compile Include="ViewExtensions\SortGlyphAdorner.cs" />
     <Compile Include="ViewModel\FileComparisonViewModel.cs" />
