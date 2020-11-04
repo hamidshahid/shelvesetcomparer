@@ -68,7 +68,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
 
-                await this.ParentSection.RefreshShelvesets();
+                await this.ParentSection.RefreshAsync();
             }
         }
 
@@ -88,7 +88,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
 
-                await this.ParentSection.RefreshShelvesets();
+                await this.ParentSection.RefreshAsync();
             }
         }
 
@@ -144,7 +144,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         private async void ListButton_Click(object sender, RoutedEventArgs e)
         {
             this.ClearError();
-            await this.ParentSection.RefreshShelvesets();
+            await this.ParentSection.RefreshAsync();
         }
 
         /// <summary>

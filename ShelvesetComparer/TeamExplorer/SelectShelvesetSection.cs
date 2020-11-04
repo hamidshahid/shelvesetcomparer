@@ -4,7 +4,7 @@
 // This is sample code only, do not use in production environments.
 // </copyright>
 
-#define FakeShelvesetResult // activate to get fake shelvest results with delay for debugging
+//#define FakeShelvesetResult // activate to get fake shelvest results with delay for debugging
 
 namespace WiredTechSolutions.ShelvesetComparer
 {
@@ -13,7 +13,6 @@ namespace WiredTechSolutions.ShelvesetComparer
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Documents;
     using Microsoft.TeamFoundation.Client;
     using Microsoft.TeamFoundation.Controls;
     using Microsoft.TeamFoundation.VersionControl.Client;
@@ -67,8 +66,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             protected set
             {
                 this.shelvesets = value;
-                this.RaisePropertyChanged("Shelvesets");
-                this.View.ListShelvesets.ItemsSource = this.shelvesets;
+                this.RaisePropertyChanged(nameof(Shelvesets));
             }
         }
 
@@ -144,7 +142,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// Refresh the list of shelveset shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        public async System.Threading.Tasks.Task RefreshShelvesets()
+        private async System.Threading.Tasks.Task RefreshShelvesetsAsync()
         {
             // Make the server call asynchronously to avoid blocking the UI
             var fetchShelvesetsTask = Task.Run(() =>
@@ -227,13 +225,13 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// Refresh the list of shelveset and comparison shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        private async System.Threading.Tasks.Task RefreshAsync()
+        public async System.Threading.Tasks.Task RefreshAsync()
         {
             try
             {
                 this.IsBusy = true;
 
-                await this.RefreshShelvesets();
+                await this.RefreshShelvesetsAsync();
             }
             catch (Exception ex)
             {
