@@ -4,7 +4,7 @@
 // This is sample code only, do not use in production environments.
 // </copyright>
 
-namespace WiredTechSolutions.ShelvesetComparer
+namespace DiffFinder
 {
     using System;
     using System.Globalization;

@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mtcw="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls"
-                    xmlns:extensions="clr-namespace:WiredTechSolutions.ShelvesetComparer">
+                    xmlns:extensions="clr-namespace:DiffFinder">
 
   <extensions:UserControlMaxHeightMultiValueConverter x:Key="MaxHeightConverter"></extensions:UserControlMaxHeightMultiValueConverter>
 

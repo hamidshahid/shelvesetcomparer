@@ -1,10 +1,11 @@
 ﻿// <copyright file="SelectShelvesetSection.cs" company="https://github.com/rajeevboobna/CompareShelvesets">Copyright https://github.com/rajeevboobna/CompareShelvesets. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
 
+//#define FakeShelvesetResult // activate to get fake shelvest results with delay for debugging
+
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -281,7 +282,7 @@ namespace DiffFinder
             {
                 // fake shelveset with 2 owners for sorting test
                 result.Add(new ShelvesetViewModel("Shelveset" + idx, 
-                    new DateTime(2020, idx % 12 + 1, idx % 28 + 1, idx % 24 + 1, idx % 60 + 1, idx % 60 + 1), 
+                    new DateTime(2020, idx % 12 + 1, idx % 28 + 1, idx % 24, idx % 60, idx % 60), 
                     "Owner" + (idx % 2)));
             }
 
