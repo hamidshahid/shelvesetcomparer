@@ -4,6 +4,7 @@ using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace DiffFinder
         /// <summary>
         /// Contains the shelveset list
         /// </summary>
-        private ObservableCollection<Shelveset> shelvesets;
+        private ObservableCollection<ShelvesetViewModel> shelvesets;
 
         /// <summary>
         /// Initializes a new instance of the SelectShelvesetSection class.
@@ -32,7 +33,7 @@ namespace DiffFinder
             this.IsVisible = true;
             this.IsExpanded = true;
             this.IsBusy = false;
-            this.shelvesets = new ObservableCollection<Shelveset>();
+            this.shelvesets = new ObservableCollection<ShelvesetViewModel>();
             this.SectionContent = new SelectShelvesetTeamExplorerView(this);
         }
 
@@ -49,7 +50,7 @@ namespace DiffFinder
         /// <summary>
         /// Gets or sets the shelveset list
         /// </summary>
-        public ObservableCollection<Shelveset> Shelvesets
+        public ObservableCollection<ShelvesetViewModel> Shelvesets
         {
             get
             {
@@ -59,8 +60,7 @@ namespace DiffFinder
             protected set
             {
                 this.shelvesets = value;
-                this.RaisePropertyChanged("Shelvesets");
-                this.View.ListShelvesets.ItemsSource = this.shelvesets;
+                this.RaisePropertyChanged(nameof(Shelvesets));
             }
         }
 
@@ -136,17 +136,19 @@ namespace DiffFinder
         /// Refresh the list of shelveset shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        public async System.Threading.Tasks.Task RefreshShelvesets()
+        private async System.Threading.Tasks.Task RefreshShelvesetsAsync()
         {
-            var shelvesets = new ObservableCollection<Shelveset>();
-
             // Make the server call asynchronously to avoid blocking the UI
-            await Task.Run(() =>
+            var fetchShelvesetsTask = Task.Run(() =>
             {
-                FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext, out shelvesets);
+#if FakeShelvesetResult
+                return FetchFakedShelveset();
+#else
+                return FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext);
+#endif
             });
 
-            this.Shelvesets = shelvesets;
+            this.Shelvesets = await fetchShelvesetsTask;
         }
 
         /// <summary>
@@ -185,9 +187,9 @@ namespace DiffFinder
         /// <param name="secondUsername">The second user name </param>
         /// <param name="context">The Team foundation server context</param>
         /// <param name="shelveSets">The shelveset list to be returned</param>
-        private static void FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context, out ObservableCollection<Shelveset> shelveSets)
+        private static ObservableCollection<ShelvesetViewModel> FetchShevlesets(string userName, string secondUsername, ITeamFoundationContext context)
         {
-            shelveSets = new ObservableCollection<Shelveset>();
+            var shelveSets = new ObservableCollection<ShelvesetViewModel>();
             if (context != null && context.HasCollection && context.HasTeamProject)
             {
                 var vcs = context.TeamProjectCollection.GetService<VersionControlServer>();
@@ -196,7 +198,7 @@ namespace DiffFinder
                     string user = string.IsNullOrWhiteSpace(userName) ? vcs.AuthorizedUser : userName;
                     foreach (var shelveSet in vcs.QueryShelvesets(null, user).OrderByDescending(s => s.CreationDate))
                     {
-                        shelveSets.Add(shelveSet);
+                        shelveSets.Add(new ShelvesetViewModel(shelveSet));
                     }
 
                     if (!string.IsNullOrWhiteSpace(secondUsername) && secondUsername != userName)
@@ -204,11 +206,13 @@ namespace DiffFinder
                         user = string.IsNullOrWhiteSpace(secondUsername) ? vcs.AuthorizedUser : secondUsername;
                         foreach (var shelveSet in vcs.QueryShelvesets(null, user).OrderByDescending(s => s.CreationDate))
                         {
-                            shelveSets.Add(shelveSet);
+                            shelveSets.Add(new ShelvesetViewModel(shelveSet));
                         }
                     }
                 }
             }
+
+            return shelveSets;
         }
 
 
@@ -251,13 +255,13 @@ namespace DiffFinder
         /// Refresh the list of shelveset and comparison shelveset asynchronously.
         /// </summary>
         /// <returns>The Task doing the refresh. Needed for Async methods</returns>
-        private async System.Threading.Tasks.Task RefreshAsync()
+        public async System.Threading.Tasks.Task RefreshAsync()
         {
             try
             {
                 this.IsBusy = true;
 
-                await this.RefreshShelvesets();
+                await this.RefreshShelvesetsAsync();
             }
             catch (Exception ex)
             {
@@ -268,5 +272,23 @@ namespace DiffFinder
                 this.IsBusy = false;
             }
         }
+
+#if FakeShelvesetResult
+        private ObservableCollection<ShelvesetViewModel> FetchFakedShelveset()
+        {
+            var result = new ObservableCollection<ShelvesetViewModel>();
+            for(var idx=0; idx < 1111; idx++)
+            {
+                // fake shelveset with 2 owners for sorting test
+                result.Add(new ShelvesetViewModel("Shelveset" + idx, 
+                    new DateTime(2020, idx % 12 + 1, idx % 28 + 1, idx % 24 + 1, idx % 60 + 1, idx % 60 + 1), 
+                    "Owner" + (idx % 2)));
+            }
+
+            Task.Delay(1500); // for some time consuming operation, to show UI response
+
+            return result;
+        }
+#endif
     }
 }
