@@ -251,7 +251,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             {
                 // fake shelveset with 2 owners for sorting test
                 result.Add(new ShelvesetViewModel("Shelveset" + idx, 
-                    new DateTime(2020, idx % 12 + 1, idx % 28 + 1, idx % 24 + 1, idx % 60 + 1, idx % 60 + 1), 
+                    new DateTime(2020, idx % 12 + 1, idx % 28 + 1, idx % 24, idx % 60, idx % 60), 
                     "Owner" + (idx % 2)));
             }
 
