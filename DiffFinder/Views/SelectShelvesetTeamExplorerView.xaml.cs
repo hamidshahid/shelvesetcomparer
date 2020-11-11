@@ -165,15 +165,11 @@ namespace DiffFinder
                     return;
                 }
                 
-                var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
                 var firstSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[0]);
                 var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
-                
-                if (dte2 != null)
-                {
-                    dte2.ExecuteCommand("Team.DiffFinder");
-                }
+
+                ShelvesetComparer.Instance.ShowResultWindow();
             }
             catch (Exception ex)
             {
@@ -199,19 +195,14 @@ namespace DiffFinder
 
                 // get workspace from page
                 var parent = this.ParentSection;
-                var te = parent.GetService<ITeamExplorer>();
-                var page = te?.CurrentPage?.GetExtensibilityService(typeof(ShelvesetComparerPage)) as ShelvesetComparerPage;
+                var page = parent.TeamExplorer.GetCurrentPageAsShelvesetComparerPage();
                 var pendChangeShelveset = parent.FetchPendingChangeShelveset(this.ParentSection.Context, page?.CurrentWorkspace);
                 
-                var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
                 var firstSheleveset = this.ListShelvesets.SelectedItems[0] as Shelveset;
                 var secondSheleveset = pendChangeShelveset;
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
 
-                if (dte2 != null)
-                {
-                    dte2.ExecuteCommand("Team.DiffFinder");
-                }
+                ShelvesetComparer.Instance.ShowResultWindow();
             }
             catch (Exception ex)
             {

@@ -54,6 +54,8 @@ namespace DiffFinder
             }
         }
 
+        public ITeamExplorer TeamExplorer => GetService<ITeamExplorer>();
+
         public T GetService<T>()
         {
             if (this.ServiceProvider != null)
@@ -81,14 +83,7 @@ namespace DiffFinder
         protected Guid ShowNotification(string message, NotificationType type)
         {
             ITeamExplorer teamExplorer = this.GetService<ITeamExplorer>();
-            if (teamExplorer != null)
-            {
-                Guid guid = Guid.NewGuid();
-                teamExplorer.ShowNotification(message, type, NotificationFlags.None, null, guid);
-                return guid;
-            }
-
-            return Guid.Empty;
+            return teamExplorer.ShowNotification(message, type);
         }
 
         protected void RaisePropertyChanged(string propertyName)

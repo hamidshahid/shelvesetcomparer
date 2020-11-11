@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
-using Microsoft.TeamFoundation.Controls;
-using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
@@ -40,7 +38,7 @@ namespace DiffFinder
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
 
             this.package = package;
@@ -96,7 +94,7 @@ namespace DiffFinder
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerResuldIdMenuItemCallback(object sender, EventArgs e)
         {
-            this.ShowToolWindow(sender, e);
+            this.ShowResultWindow();
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace DiffFinder
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">Event arguments</param>
-        private void ShowToolWindow(object sender, EventArgs e)
+        public void ShowResultWindow()
         {
             ToolWindowPane window = package.FindToolWindow(typeof(ShelvesetComparerToolWindow), 0, true);
             if ((null == window) || (null == window.Frame))
@@ -125,32 +123,13 @@ namespace DiffFinder
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerTeamExplorerViewIdMenuItemCallback(object sender, EventArgs e)
         {
-             try
-            {
-                ITeamExplorer teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
-                if (teamExplorer != null)
-                {
-                    teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.PendingChanges), null);
-                    var pendingChangesExt = teamExplorer.CurrentPage?.GetExtensibilityService(typeof(IPendingChangesExt)) as IPendingChangesExt;
-                    var ws = pendingChangesExt?.Workspace;
-
-                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), ws);
-                }
-            }
-            catch (Exception ex)
-            {
-                //this.ShowNotification(ex.Message, NotificationType.Error);
-            }
+            NavigateToShelvestComparerPage();
         }
 
-        public T GetService<T>()
+        public void NavigateToShelvestComparerPage()
         {
-            if (this.ServiceProvider != null)
-            {
-                return (T)this.ServiceProvider.GetService(typeof(T));
-            }
-
-            return default(T);
+            var teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
+            teamExplorer.NavigateToShelvesetComparer();
         }
     }
 }

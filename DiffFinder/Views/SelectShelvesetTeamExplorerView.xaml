@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:mvvm="clr-namespace:Microsoft.TeamFoundation.MVVM;assembly=Microsoft.TeamFoundation.Controls"
       xmlns:tfscontrols="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls"      
+      xmlns:tfsteamexplorer="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.TeamExplorer.Framework;assembly=Microsoft.TeamFoundation.Controls"      
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       xmlns:extensions="clr-namespace:DiffFinder"
@@ -15,7 +16,7 @@
 
   <UserControl.MaxHeight>
     <MultiBinding Converter="{StaticResource ResourceKey=MaxHeightConverter }">
-      <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ScrollContentPresenter}}" Mode="OneWay"/>
+      <Binding Path="ActualHeight" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type tfsteamexplorer:PageScrollViewer}}" Mode="OneWay"/>
     </MultiBinding>
   </UserControl.MaxHeight>
 

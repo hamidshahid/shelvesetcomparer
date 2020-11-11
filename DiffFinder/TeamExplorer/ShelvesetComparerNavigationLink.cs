@@ -4,7 +4,6 @@ using Microsoft.TeamFoundation.Controls;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
@@ -37,22 +36,7 @@ namespace DiffFinder
         /// </summary>
         public override void Execute()
         {
-            try
-            {
-                ITeamExplorer teamExplorer = GetService<ITeamExplorer>();
-                if (teamExplorer != null)
-                {
-                    teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.PendingChanges), null);
-                    var pendingChangesExt = teamExplorer.CurrentPage?.GetExtensibilityService(typeof(IPendingChangesExt)) as IPendingChangesExt;
-                    var ws = pendingChangesExt?.Workspace;
-
-                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), ws);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex.Message, NotificationType.Error);
-            }
+            TeamExplorer.NavigateToShelvesetComparer();
         }
 
         /// <summary>

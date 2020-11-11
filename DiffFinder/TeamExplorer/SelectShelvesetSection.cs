@@ -158,11 +158,7 @@ namespace DiffFinder
         /// <param name="shelveset">The shelveset to be displayed.</param>
         public void ViewShelvesetDetails(Shelveset shelveset)
         {
-            ITeamExplorer teamExplorer = this.GetService<ITeamExplorer>();
-            if (teamExplorer != null)
-            {
-                teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.ShelvesetDetails), shelveset);
-            }
+            TeamExplorer.NavigateToShelvesetDetails(shelveset);
         }
 
         /// <summary>
