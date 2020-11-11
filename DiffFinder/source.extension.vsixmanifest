@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="c3b55d75-8ea6-3936-a8853-1d105zd38z19" Version="1.0.1.19" Language="en-US" Publisher="Rajeev Boobna" />
+        <Identity Id="c3b55d75-8ea6-3936-a8853-1d105zd38z19" Version="1.0.2.19" Language="en-US" Publisher="Rajeev Boobna" />
         <DisplayName>DiffFinder</DisplayName>
         <Description xml:space="preserve">The extension allows you to compare files in two shelvesets.</Description>
         <Tags>Shelveset, Comparison, Team Explorer</Tags>
