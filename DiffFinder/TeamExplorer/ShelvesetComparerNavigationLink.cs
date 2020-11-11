@@ -4,7 +4,6 @@ using Microsoft.TeamFoundation.Controls;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 
 namespace DiffFinder
 {
