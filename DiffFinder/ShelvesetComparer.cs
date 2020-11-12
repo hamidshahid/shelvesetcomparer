@@ -14,10 +14,24 @@ namespace DiffFinder
     internal sealed class ShelvesetComparer
     {
         /// <summary>
-        /// Command ID.
+        /// Command ID for Result window
         /// </summary>
         public const int ShelvesetComparerResuldId = 0x0100;
+
+        /// <summary>
+        /// Command ID for TeamExplorer compare view
+        /// </summary>
         public const int ShelvesetComparerTeamExplorerViewId = 0x0200;
+
+        /// <summary>
+        /// Dte Command name for Result window, keep in sync with vsct Button names (removing special characters and whitespaces)
+        /// </summary>
+        public const string ShelvesetComparerResuldIdDteCommandName = "Team.DiffFinderResults";
+
+        /// <summary>
+        /// Dte Command name for Result window, keep in sync with vsct Button names (removing special characters and whitespaces)
+        /// </summary>
+        public const string ShelvesetComparerTeamExplorerViewIdDteCommandName = "Team.DiffFinderSelect";
 
         /// <summary>
         /// Command menu group (command set GUID).

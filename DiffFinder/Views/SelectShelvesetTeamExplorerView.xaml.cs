@@ -2,14 +2,10 @@
 
 using EnvDTE;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -169,7 +165,15 @@ namespace DiffFinder
                 var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
 
-                ShelvesetComparer.Instance.ShowResultWindow();
+                if (ShelvesetComparer.Instance != null)
+                {
+                    ShelvesetComparer.Instance.ShowResultWindow();
+                } 
+                else
+                {
+                    var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
+                    dte2?.ExecuteCommand(ShelvesetComparer.ShelvesetComparerResuldIdDteCommandName);
+                }
             }
             catch (Exception ex)
             {
@@ -202,7 +206,15 @@ namespace DiffFinder
                 var secondSheleveset = pendChangeShelveset;
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
 
-                ShelvesetComparer.Instance.ShowResultWindow();
+                if (ShelvesetComparer.Instance != null)
+                {
+                    ShelvesetComparer.Instance.ShowResultWindow();
+                }
+                else
+                {
+                    var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
+                    dte2?.ExecuteCommand(ShelvesetComparer.ShelvesetComparerResuldIdDteCommandName);
+                }
             }
             catch (Exception ex)
             {
