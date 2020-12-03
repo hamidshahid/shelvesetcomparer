@@ -72,7 +72,9 @@
     <Compile Include="TeamExplorer\ShelvesetComparerNavigationLink.cs" />
     <Compile Include="TeamExplorer\ShelvesetComparerNavigationLinkItem.cs" />
     <Compile Include="TeamExplorer\ShelvesetComparerPage.cs" />
+    <Compile Include="ViewModel\ShelvesetViewModel.cs" />
     <Compile Include="TeamExplorer\ShelvesetsContext.cs" />
+    <Compile Include="ViewExtensions\UserControlMaxHeightMultiValueConverter.cs" />
     <Compile Include="ViewExtensions\GridViewSorter.cs" />
     <Compile Include="ViewExtensions\SortGlyphAdorner.cs" />
     <Compile Include="ViewModel\FileComparisonViewModel.cs" />

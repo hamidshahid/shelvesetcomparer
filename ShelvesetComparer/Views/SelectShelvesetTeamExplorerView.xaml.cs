@@ -2,6 +2,9 @@
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -17,11 +20,6 @@ namespace WiredTechSolutions.ShelvesetComparer
     public partial class SelectShelvesetTeamExplorerView
     {
         /// <summary>
-        /// Depending property for Parent Section.
-        /// </summary>
-        public static readonly DependencyProperty ParentSectionProperty = DependencyProperty.Register("ParentSection", typeof(SelectShelvesetSection), typeof(SelectShelvesetSection));
-
-        /// <summary>
         /// Initializes a new instance of the SelectShelvesetTeamExplorerView class
         /// </summary>
         /// <param name="parentSection">Reference to the Team Explorer section where the view is initialized.</param>
@@ -29,7 +27,6 @@ namespace WiredTechSolutions.ShelvesetComparer
         {
             this.InitializeComponent();
             this.ParentSection = parentSection;
-            this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
             this.DataContext = this;
         }
 
@@ -38,15 +35,8 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// </summary>
         public SelectShelvesetSection ParentSection
         {
-            get
-            {
-                return (SelectShelvesetSection)GetValue(ParentSectionProperty);
-            }
-
-            private set
-            {
-                SetValue(ParentSectionProperty, value);
-            }
+            get;
+            private set;
         }
 
         /// <summary>
@@ -78,8 +68,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
 
-                await this.ParentSection.RefreshShelvesets();
-                this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;                
+                await this.ParentSection.RefreshAsync();
             }
         }
 
@@ -99,8 +88,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
 
-                await this.ParentSection.RefreshShelvesets();
-                this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
+                await this.ParentSection.RefreshAsync();
             }
         }
 
@@ -156,8 +144,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         private async void ListButton_Click(object sender, RoutedEventArgs e)
         {
             this.ClearError();
-            await this.ParentSection.RefreshShelvesets();
-            this.ListShelvesets.ItemsSource = this.ParentSection.Shelvesets;
+            await this.ParentSection.RefreshAsync();
         }
 
         /// <summary>
@@ -177,8 +164,8 @@ namespace WiredTechSolutions.ShelvesetComparer
                 }
                 
                 var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
-                var firstSheleveset = this.ListShelvesets.SelectedItems[0] as Shelveset;
-                var secondSheleveset = this.ListShelvesets.SelectedItems[1] as Shelveset;
+                var firstSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[0]);
+                var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
                 
                 if (dte2 != null)
@@ -226,12 +213,17 @@ namespace WiredTechSolutions.ShelvesetComparer
         {
             if (listView.SelectedItems.Count == 1)
             {
-                Shelveset shelveset = listView.SelectedItems[0] as Shelveset;
+                var shelveset = CastAsShelveset(listView.SelectedItems[0]);
                 if (shelveset != null)
                 {
                     this.ParentSection.ViewShelvesetDetails(shelveset);
                 }
             }
+        }
+
+        private static Shelveset CastAsShelveset(object listViewSelectedItem)
+        {
+            return (listViewSelectedItem as ShelvesetViewModel)?.Shelveset;
         }
     }
 }
