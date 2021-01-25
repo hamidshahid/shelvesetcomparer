@@ -96,6 +96,7 @@
     <None Include="packages.config" />
     <Content Include="Resources\License.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Properties\Key.snk" />
     <None Include="source.extension.vsixmanifest">
