@@ -5,6 +5,7 @@ namespace WiredTechSolutions.ShelvesetComparer
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
 
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -29,6 +30,7 @@ namespace WiredTechSolutions.ShelvesetComparer
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(ShelvesetComparerToolWindow))]
+    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)] // load in the background
     public sealed class ShelvesetComparerPackage : Package
     {
         /// <summary>
