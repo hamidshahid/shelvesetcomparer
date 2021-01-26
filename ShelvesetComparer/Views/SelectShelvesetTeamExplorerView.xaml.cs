@@ -161,15 +161,10 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
                 
-                var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
                 var firstSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[0]);
                 var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
-                
-                if (dte2 != null)
-                {
-                    dte2.ExecuteCommand("Team.CompareShelvesets");
-                }
+                ShelvesetComparer.Instance.ShowComparisonWindow();
             }
             catch (Exception ex)
             {
