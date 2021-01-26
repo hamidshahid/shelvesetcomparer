@@ -166,15 +166,7 @@ namespace DiffFinder
                 var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
 
-                if (ShelvesetComparer.Instance != null)
-                {
-                    ShelvesetComparer.Instance.ShowResultWindow();
-                } 
-                else
-                {
-                    var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
-                    dte2?.ExecuteCommand(ShelvesetComparer.ShelvesetComparerResuldIdDteCommandName);
-                }
+                ShelvesetComparer.Instance.ShowComparisonWindow();
             }
             catch (Exception ex)
             {
@@ -207,15 +199,7 @@ namespace DiffFinder
                 var secondSheleveset = pendChangeShelveset;
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
 
-                if (ShelvesetComparer.Instance != null)
-                {
-                    ShelvesetComparer.Instance.ShowResultWindow();
-                }
-                else
-                {
-                    var dte2 = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
-                    dte2?.ExecuteCommand(ShelvesetComparer.ShelvesetComparerResuldIdDteCommandName);
-                }
+                ShelvesetComparer.Instance.ShowComparisonWindow();
             }
             catch (Exception ex)
             {

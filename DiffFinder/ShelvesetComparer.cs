@@ -99,6 +99,18 @@ namespace DiffFinder
             Instance = new ShelvesetComparer(package);
         }
 
+        public void ShowComparisonWindow()
+        {
+            ToolWindowPane window = package.FindToolWindow(typeof(ShelvesetComparerToolWindow), 0, true);
+            if ((null == window) || (null == window.Frame))
+            {
+                throw new NotSupportedException(Resources.CanNotCreateWindow);
+            }
+
+            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            windowFrame.Show();
+        }
+
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -118,14 +130,7 @@ namespace DiffFinder
         /// <param name="e">Event arguments</param>
         public void ShowResultWindow()
         {
-            ToolWindowPane window = package.FindToolWindow(typeof(ShelvesetComparerToolWindow), 0, true);
-            if ((null == window) || (null == window.Frame))
-            {
-                throw new NotSupportedException(Resources.CanNotCreateWindow);
-            }
-
-            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            windowFrame.Show();
+            this.ShowComparisonWindow();
         }
 
         /// <summary>
