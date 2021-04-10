@@ -4,8 +4,6 @@
 // This is sample code only, do not use in production environments.
 // </copyright>
 
-//#define FakeShelvesetResult // activate to get fake shelvest results with delay for debugging
-
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
@@ -255,7 +253,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     "Owner" + (idx % 2)));
             }
 
-            Task.Delay(1500); // for some time consuming operation, to show UI response
+            System.Threading.Thread.Sleep(1500); // for some time consuming operation, to show UI response
 
             return result;
         }
