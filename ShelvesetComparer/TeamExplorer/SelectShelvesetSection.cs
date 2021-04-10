@@ -1,10 +1,8 @@
-﻿// <copyright file="GridViewSorter.cs" company="http://shelvesetcomparer.codeplex.com">
+﻿// <copyright file="SelectShelvesetSection.cs" company="http://shelvesetcomparer.codeplex.com">
 // Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. 
 // This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html).
 // This is sample code only, do not use in production environments.
 // </copyright>
-
-//#define FakeShelvesetResult // activate to get fake shelvest results with delay for debugging
 
 namespace WiredTechSolutions.ShelvesetComparer
 {
@@ -243,7 +241,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
         }
 
-#if FakeShelvesetResult
+#if StubbingWithoutServer
         private ObservableCollection<ShelvesetViewModel> FetchFakedShelveset()
         {
             var result = new ObservableCollection<ShelvesetViewModel>();
@@ -255,7 +253,7 @@ namespace WiredTechSolutions.ShelvesetComparer
                     "Owner" + (idx % 2)));
             }
 
-            Task.Delay(1500); // for some time consuming operation, to show UI response
+            System.Threading.Thread.Sleep(1500); // for some time consuming operation, to show UI response
 
             return result;
         }
