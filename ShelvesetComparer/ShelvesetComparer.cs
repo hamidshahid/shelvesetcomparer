@@ -98,6 +98,8 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
         /// <summary>
+        /// Menu item callback for "Team - Results view" item.
+        /// 
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
         /// OleMenuCommandService service and MenuCommand class.
@@ -106,20 +108,12 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerResuldIdMenuItemCallback(object sender, EventArgs e)
         {
-            this.ShowToolWindow(sender, e);
-        }
-
-        /// <summary>
-        /// This function is called when the user clicks the menu item that shows the tool window.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">Event arguments</param>
-        private void ShowToolWindow(object sender, EventArgs e)
-        {
             this.ShowComparisonWindow();
         }
 
         /// <summary>
+        /// Menu item callback for "Team - Select view" item.
+        /// 
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
         /// OleMenuCommandService service and MenuCommand class.
@@ -128,15 +122,46 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerTeamExplorerViewIdMenuItemCallback(object sender, EventArgs e)
         {
-            try
+            NavigateToShelvestComparerPage();
+        }
+
+        public void NavigateToShelvestComparerPage()
+        {
+            TraceOutput("Open TeamExplorer ShelvesetComparer page.");
+            var teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
+            teamExplorer.NavigateToShelvesetComparer();
+        }
+
+        public void TraceOutput(string text)
+        {
+#if TRACE
+            OutputPaneWriteLine(text);
+#endif
+        }
+
+        public void OutputPaneWriteLine(string text, bool prefixDateTime = true)
+        {
+            OutputPaneWriteLine(this.ServiceProvider, text, prefixDateTime);
+        }
+
+        public static void OutputPaneWriteLine(IServiceProvider serviceProvider, string text, bool prefixDateTime = true)
+        {
+            var outWindow = serviceProvider.GetService<SVsOutputWindow, IVsOutputWindow>();
+            if (outWindow == null)
             {
-                ITeamExplorer teamExplorer = GetService<ITeamExplorer>();
+                ITeamExplorer teamExplorer = serviceProvider.GetService<ITeamExplorer>();
                 if (teamExplorer != null)
                 {
                     teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
                 }
             }
-            catch (Exception ex)
+
+            // randomly generated GUID to identify the "Shelveset Comparer" output window pane
+            const string c_ExtensionOutputWindowGuid = "{38BFBA25-8AB3-4F8E-B992-930E403AA281}";
+            Guid paneGuid = new Guid(c_ExtensionOutputWindowGuid);
+            IVsOutputWindowPane generalPane = null;
+            outWindow.GetPane(ref paneGuid, out generalPane);
+            if (generalPane == null)
             {
                 //this.ShowNotification(ex.Message, NotificationType.Error);
             }
@@ -144,12 +169,7 @@ namespace WiredTechSolutions.ShelvesetComparer
 
         public T GetService<T>()
         {
-            if (this.ServiceProvider != null)
-            {
-                return (T)this.ServiceProvider.GetService(typeof(T));
-            }
-
-            return default(T);
+            return this.ServiceProvider.GetService<T>();
         }
     }
 }
