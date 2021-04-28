@@ -168,7 +168,8 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
             catch (Exception ex)
             {
-                this.OutputError(ex);
+                // write full exception to output
+                ShelvesetComparer.Instance?.OutputPaneWriteLine(ex.ToString());
 
                 this.ShowError(ex.Message);
             }
@@ -224,31 +225,6 @@ namespace WiredTechSolutions.ShelvesetComparer
         private static Shelveset CastAsShelveset(object listViewSelectedItem)
         {
             return (listViewSelectedItem as ShelvesetViewModel)?.Shelveset;
-        }
-
-        private void OutputError(Exception ex)
-        {
-            if (ShelvesetComparer.Instance == null)
-            {
-                // the package was not loaded
-                return;
-            }
-
-            IVsOutputWindow outWindow = ShelvesetComparer.Instance.GetService<SVsOutputWindow>() as IVsOutputWindow;
-
-            // randomly generated GUID to identify the "Shelveset Comparer" output window pane
-            Guid paneGuid = new Guid("{38BFBA25-8AB3-4F8E-B992-930E403AA281}");
-            IVsOutputWindowPane generalPane;
-            outWindow.GetPane(ref paneGuid, out generalPane);
-            if (generalPane == null)
-            {
-                // the pane doesn't already exist
-                outWindow.CreatePane(ref paneGuid, WiredTechSolutions.ShelvesetComparer.Resources.ToolWindowTitle, Convert.ToInt32(true), Convert.ToInt32(true));
-                outWindow.GetPane(ref paneGuid, out generalPane);
-            }
-
-            generalPane.OutputString(ex.ToString() + Environment.NewLine);
-            generalPane.Activate();
         }
     }
 }

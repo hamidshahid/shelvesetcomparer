@@ -38,12 +38,12 @@ namespace WiredTechSolutions.ShelvesetComparer
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
 
             this.package = package;
 
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            OleMenuCommandService commandService = this.ServiceProvider.GetService<IMenuCommandService, OleMenuCommandService>();
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, ShelvesetComparerResuldId);
@@ -132,6 +132,10 @@ namespace WiredTechSolutions.ShelvesetComparer
             teamExplorer.NavigateToShelvesetComparer();
         }
 
+        /// <summary>
+        /// Write to output (only if trace is enabled)
+        /// </summary>
+        /// <param name="text"></param>
         public void TraceOutput(string text)
         {
 #if TRACE
@@ -139,6 +143,9 @@ namespace WiredTechSolutions.ShelvesetComparer
 #endif
         }
 
+        /// <summary>
+        /// Write to output window
+        /// </summary>
         public void OutputPaneWriteLine(string text, bool prefixDateTime = true)
         {
             OutputPaneWriteLine(this.ServiceProvider, text, prefixDateTime);
@@ -149,11 +156,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             var outWindow = serviceProvider.GetService<SVsOutputWindow, IVsOutputWindow>();
             if (outWindow == null)
             {
-                ITeamExplorer teamExplorer = serviceProvider.GetService<ITeamExplorer>();
-                if (teamExplorer != null)
-                {
-                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
-                }
+                return;
             }
 
             // randomly generated GUID to identify the "Shelveset Comparer" output window pane
@@ -163,13 +166,17 @@ namespace WiredTechSolutions.ShelvesetComparer
             outWindow.GetPane(ref paneGuid, out generalPane);
             if (generalPane == null)
             {
-                //this.ShowNotification(ex.Message, NotificationType.Error);
+                // the pane doesn't already exist
+                outWindow.CreatePane(ref paneGuid, Resources.ToolWindowTitle, Convert.ToInt32(true), Convert.ToInt32(true));
+                outWindow.GetPane(ref paneGuid, out generalPane);
             }
-        }
 
-        public T GetService<T>()
-        {
-            return this.ServiceProvider.GetService<T>();
+            if (prefixDateTime)
+            {
+                text = $"{DateTime.Now:G} {text}";
+            }
+            generalPane.OutputString(text + Environment.NewLine);
+            generalPane.Activate();
         }
     }
 }

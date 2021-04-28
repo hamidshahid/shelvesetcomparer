@@ -1,12 +1,11 @@
-﻿// <copyright file="SelectShelvesetSection.cs" company="https://github.com/rajeevboobna/CompareShelvesets">
-// Copyright https://github.com/rajeevboobna/CompareShelvesets. All Rights Reserved. 
+﻿// <copyright file="TeamExplorerExtensions.cs" company="https://github.com/dprZoft/shelvesetcomparer">
+// Copyright https://github.com/dprZoft/shelvesetcomparer. All Rights Reserved. 
 // This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html). 
 // This is sample code only, do not use in production environments.
 // </copyright>
 
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using Microsoft.TeamFoundation.VersionControl.Controls.Extensibility;
 using System;
 using System.Linq;
 
@@ -42,13 +41,8 @@ namespace WiredTechSolutions.ShelvesetComparer
             {
                 if (teamExplorer != null)
                 {
-                    // workspace from IPendingChangesExt for our context
-                    teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.PendingChanges), null);
-                    var pendingChangesExt = teamExplorer.CurrentPageOrUndockedGetExtensibilityService<IPendingChangesExt>();
-                    var ws = pendingChangesExt?.Workspace;
-
-                    ShelvesetComparer.Instance.TraceOutput($"Open TeamExplorer ShelvesetComparer page with WS: {ws?.DisplayName ?? "<null>"}");
-                    return teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), ws);
+                    ShelvesetComparer.Instance.TraceOutput($"Open TeamExplorer ShelvesetComparer page");
+                    return teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
                 }
             }
             catch (Exception ex)

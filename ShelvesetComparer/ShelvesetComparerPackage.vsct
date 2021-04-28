@@ -56,13 +56,13 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0101" type="Button">
+      <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" type="Button">
         <Strings>
           <ButtonText>Compare Shelvesets: Results</ButtonText>
           <CommandName>ShelvesetComparer.Results</CommandName>
         </Strings>
       </Button>
-	  <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0100" type="Button">
+	  <Button guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" type="Button">
         <Strings>
           <ButtonText>Compare Shelvesets: Select</ButtonText>
           <CommandName>ShelvesetComparer.Select</CommandName>
@@ -72,7 +72,7 @@
   </Commands>
 
     <CommandPlacements>
-        <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0100" >
+        <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerResuldId" priority="0x0101" >
             <Parent guid="guidShelvesetComparerPackageCmdSet" id="IDM_ShelvesetComparer_MENU_TEAM"/>
         </CommandPlacement>
         <CommandPlacement guid="guidShelvesetComparerPackageCmdSet" id="ShelvesetComparerTeamExplorerViewId" priority="0x0100" >
