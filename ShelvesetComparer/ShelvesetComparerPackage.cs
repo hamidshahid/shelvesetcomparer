@@ -31,7 +31,7 @@ namespace WiredTechSolutions.ShelvesetComparer
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(ShelvesetComparerToolWindow))]
-    //[ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)] // load in the background, no auto load for now, load on first action
+    //[ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)] // load in the background; no auto load for now. Package will load on first command
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     public sealed class ShelvesetComparerPackage : AsyncPackage
     {
