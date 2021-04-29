@@ -190,32 +190,5 @@ namespace WiredTechSolutions.ShelvesetComparer
             generalPane.OutputString(text + Environment.NewLine);
             generalPane.Activate();
         }
-
-        public void OutputPaneWriteLine(string text, bool prefixDateTime = true)
-        {
-            IVsOutputWindow outWindow = GetService<SVsOutputWindow>() as IVsOutputWindow;
-            if (outWindow == null)
-            {
-                return;
-            }
-
-            // randomly generated GUID to identify the "Shelveset Comparer" output window pane
-            Guid paneGuid = new Guid("{38BFBA25-8AB3-4F8E-B992-930E403AA281}");
-            IVsOutputWindowPane generalPane = null;
-            outWindow.GetPane(ref paneGuid, out generalPane);
-            if (generalPane == null)
-            {
-                // the pane doesn't already exist
-                outWindow.CreatePane(ref paneGuid, WiredTechSolutions.ShelvesetComparer.Resources.ToolWindowTitle, Convert.ToInt32(true), Convert.ToInt32(true));
-                outWindow.GetPane(ref paneGuid, out generalPane);
-            }
-
-            if (prefixDateTime)
-            {
-                text = $"{DateTime.Now:G} {text}";
-            }
-            generalPane.OutputString(text + Environment.NewLine);
-            generalPane.Activate();
-        }
     }
 }
