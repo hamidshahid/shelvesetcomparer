@@ -161,13 +161,14 @@ namespace WiredTechSolutions.ShelvesetComparer
                     return;
                 }
                 
-                var firstSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[0]);
-                var secondSheleveset = CastAsShelveset(this.ListShelvesets.SelectedItems[1]);
+                var firstSheleveset = this.ListShelvesets.SelectedItems[0] as ShelvesetViewModel;
+                var secondSheleveset = this.ListShelvesets.SelectedItems[1] as ShelvesetViewModel;
                 ShelvesetComparerViewModel.Instance.Initialize(firstSheleveset, secondSheleveset);
                 ShelvesetComparer.Instance.ShowComparisonWindow();
             }
             catch (Exception ex)
             {
+                // write full exception to output
                 ShelvesetComparer.Instance?.OutputPaneWriteLine(ex.ToString());
 
                 this.ShowError(ex.Message);
@@ -216,6 +217,11 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
         }
 
+        /// <summary>
+        /// Cast given item to <see cref="ShelvesetViewModel"/> and return wrapped MS <see cref="Shelveset"/>.
+        /// </summary>
+        /// <param name="listViewSelectedItem">Object to cast and get Shelveset from</param>
+        /// <returns>Wraped <see cref="Shelveset"/> or null</returns>
         private static Shelveset CastAsShelveset(object listViewSelectedItem)
         {
             return (listViewSelectedItem as ShelvesetViewModel)?.Shelveset;
