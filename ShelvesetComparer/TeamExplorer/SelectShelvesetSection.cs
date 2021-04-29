@@ -145,7 +145,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             // Make the server call asynchronously to avoid blocking the UI
             var fetchShelvesetsTask = Task.Run(() =>
             {
-#if FakeShelvesetResult
+#if StubbingWithoutServer
                 return FetchFakedShelveset();
 #else
                 return FetchShevlesets(this.FirstUserAccountName, this.SecondUserAccountName, this.CurrentContext);
@@ -162,10 +162,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         public void ViewShelvesetDetails(Shelveset shelveset)
         {
             ITeamExplorer teamExplorer = this.GetService<ITeamExplorer>();
-            if (teamExplorer != null)
-            {
-                teamExplorer.NavigateToPage(new Guid(TeamExplorerPageIds.ShelvesetDetails), shelveset);
-            }
+            teamExplorer.NavigateToShelvesetDetails(shelveset);
         }
 
         /// <summary>
@@ -242,8 +239,13 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
 #if StubbingWithoutServer
-        private ObservableCollection<ShelvesetViewModel> FetchFakedShelveset()
+        /// <summary>
+        /// Debugging replacement for <see cref="FetchShevlesets(string, string, ITeamFoundationContext)"/> which replaces hard coded list of shelvesets to enable fast debugging without server.
+        /// </summary>
+        private static ObservableCollection<ShelvesetViewModel> FetchFakedShelveset()
         {
+            ShelvesetComparer.Instance.TraceOutput("Debug mode active: using fake shelveset list for easier debugging.");
+
             var result = new ObservableCollection<ShelvesetViewModel>();
             for(var idx=0; idx < 1111; idx++)
             {

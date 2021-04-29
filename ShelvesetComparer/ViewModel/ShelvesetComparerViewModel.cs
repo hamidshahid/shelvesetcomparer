@@ -382,14 +382,15 @@ namespace WiredTechSolutions.ShelvesetComparer
                 .Select(pc => new PendingChangeFacade(pc)).ToArray<IPendingChange>();
 
 #else
+            ShelvesetComparer.Instance.TraceOutput("Debug mode active: using fake pending changes for easier debugging.");
             if (shelveset.Name.Equals("Shelveset1"))
             {
                 return new List<IPendingChange>() 
                 {
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file1", @"$/Main/BranchA/src/file1", ItemType.File, 1, ChangeType.Edit, new byte[] { 0x1 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x2 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x3 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\include\file4", @"$/Main/BranchA/include/file4", ItemType.File, 4, ChangeType.Edit, new byte[] { 0x4 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1", @"$/Main/BranchA/src/file1", ItemType.File, 1, ChangeType.Edit, new byte[] { 0x1 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x2 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x3 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file4", @"$/Main/BranchA/include/file4", ItemType.File, 4, ChangeType.Edit, new byte[] { 0x4 }),
                 }
                 .ToArray();
             }
@@ -397,10 +398,10 @@ namespace WiredTechSolutions.ShelvesetComparer
             {
                 return new List<IPendingChange>()
                 {
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file1_1", @"$/Main/BranchA/src/file1_1", ItemType.File, 1, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x20 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x30 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file4", @"$/Main/BranchA/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x4 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1_1", @"$/Main/BranchA/src/file1_1", ItemType.File, 1, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x20 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x30 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file4", @"$/Main/BranchA/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x4 }),
                 }
                 .ToArray();
             }
@@ -409,10 +410,10 @@ namespace WiredTechSolutions.ShelvesetComparer
                 // different branch
                 return new List<IPendingChange>()
                 {
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file1_1", @"$/Main/BranchB/src/file1_1", ItemType.File, 10, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file2", @"$/Main/BranchB/src/file2", ItemType.File, 20, ChangeType.Edit, new byte[] { 0x20 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\include\file1", @"$/Main/BranchB/include/file1", ItemType.File, 30, ChangeType.Edit, new byte[] { 0x30 }),
-                    new PendingChangeFacadeFake(null, @"C:\WS\src\file4", @"$/Main/BranchB/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x40 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1_1", @"$/Main/BranchB/src/file1_1", ItemType.File, 10, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchB/src/file2", ItemType.File, 20, ChangeType.Edit, new byte[] { 0x20 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchB/include/file1", ItemType.File, 30, ChangeType.Edit, new byte[] { 0x30 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file4", @"$/Main/BranchB/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x40 }),
                 }
                 .ToArray();
             }

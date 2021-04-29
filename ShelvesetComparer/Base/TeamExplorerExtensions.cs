@@ -41,13 +41,17 @@ namespace WiredTechSolutions.ShelvesetComparer
             {
                 if (teamExplorer != null)
                 {
-                    ShelvesetComparer.Instance.TraceOutput($"Open TeamExplorer ShelvesetComparer page");
+                    ShelvesetComparer.Instance.TraceOutput($"Open TeamExplorer ShelvesetComparer page.");
                     return teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
                 }
             }
             catch (Exception ex)
             {
                 teamExplorer?.ShowNotification(ex.Message, NotificationType.Error);
+                if (teamExplorer == null)
+                {
+                    ShelvesetComparer.Instance?.OutputPaneWriteLine($"Exception while opening ShelvesetComparer page and TeamExplorer is null: {ex}");
+                }
             }
 
             return null;
@@ -101,21 +105,6 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
 
             return page.GetExtensibilityService(typeof(TService)) as TOut;
-        }
-
-        public static TService GetService<TService>(this IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetService<TService, TService>();
-        }
-
-        public static TOut GetService<TService, TOut>(this IServiceProvider serviceProvider)
-        {
-            if (serviceProvider != null)
-            {
-                return (TOut) serviceProvider.GetService(typeof(TService));
-            }
-
-            return default(TOut);
         }
     }
 }

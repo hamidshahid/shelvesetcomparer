@@ -54,6 +54,8 @@ namespace WiredTechSolutions.ShelvesetComparer
                 menuItem = new MenuCommand(this.ShelvesetComparerTeamExplorerViewIdMenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
+
+            TraceOutput("Package initialized.");
         }
 
         /// <summary>
@@ -85,6 +87,9 @@ namespace WiredTechSolutions.ShelvesetComparer
             Instance = new ShelvesetComparer(package);
         }
 
+        /// <summary>
+        /// Open and show ShelvesetComparer result window.
+        /// </summary>
         public void ShowComparisonWindow()
         {
             ToolWindowPane window = package.FindToolWindow(typeof(ShelvesetComparerToolWindow), 0, true);
@@ -125,17 +130,18 @@ namespace WiredTechSolutions.ShelvesetComparer
             NavigateToShelvestComparerPage();
         }
 
+        /// <summary>
+        /// Open ShelvesetComparer select page in TeamExplorer
+        /// </summary>
         public void NavigateToShelvestComparerPage()
         {
-            TraceOutput("Open TeamExplorer ShelvesetComparer page.");
             var teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
             teamExplorer.NavigateToShelvesetComparer();
         }
 
         /// <summary>
-        /// Write to output (only if trace is enabled)
+        /// Write trace to output (only if trace is enabled)
         /// </summary>
-        /// <param name="text"></param>
         public void TraceOutput(string text)
         {
 #if TRACE
@@ -144,13 +150,16 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
         /// <summary>
-        /// Write to output window
+        /// Write to own output pane in output window with optional DateTime prefix and activate pane afterwards.
         /// </summary>
         public void OutputPaneWriteLine(string text, bool prefixDateTime = true)
         {
             OutputPaneWriteLine(this.ServiceProvider, text, prefixDateTime);
         }
 
+        /// <summary>
+        /// Write text with optional DateTime prefix to own output pane (create if not existing) and activate pane afterwards.
+        /// </summary>
         public static void OutputPaneWriteLine(IServiceProvider serviceProvider, string text, bool prefixDateTime = true)
         {
             var outWindow = serviceProvider.GetService<SVsOutputWindow, IVsOutputWindow>();

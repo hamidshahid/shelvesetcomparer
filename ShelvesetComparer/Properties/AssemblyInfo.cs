@@ -1,12 +1,5 @@
 ﻿// <copyright file="AssemblyInfo.cs" company="http://shelvesetcomparer.codeplex.com">Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
 
-#if DEBUG
-
-// activate to get fake shelvest results with delay for debugging
-#define StubbingWithoutServer
-
-#endif
-
 using System;
 using System.Reflection;
 using System.Resources;
