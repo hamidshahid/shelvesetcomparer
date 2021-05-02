@@ -1,4 +1,4 @@
-﻿// <copyright file="GridViewSorter.cs" company="http://shelvesetcomparer.codeplex.com">
+﻿// <copyright file="ShelvesetViewModel.cs" company="http://shelvesetcomparer.codeplex.com">
 // Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. 
 // This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html).
 // This is sample code only, do not use in production environments.
@@ -14,14 +14,15 @@ namespace WiredTechSolutions.ShelvesetComparer
     /// </summary>
     public class ShelvesetViewModel
     {
-        public ShelvesetViewModel(string name, DateTime creationDate, string ownerDisplayName)
+        public ShelvesetViewModel(string name, DateTime creationDate, string ownerDisplayName, string ownerName = null)
         {
             Name = name;
             CreationDate = creationDate;
             OwnerDisplayName = ownerDisplayName;
+            OwnerName = ownerName ?? ownerDisplayName;
         }
         public ShelvesetViewModel(Shelveset shelveset)
-            : this(shelveset.Name, shelveset.CreationDate, shelveset.OwnerDisplayName)
+            : this(shelveset.Name, shelveset.CreationDate, shelveset.OwnerDisplayName, shelveset.OwnerName)
         {
             Shelveset = shelveset;
         }
@@ -29,6 +30,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public string OwnerDisplayName { get; set; }
+        public string OwnerName { get; set; }
         public Shelveset Shelveset { get; set; }
     }
 }

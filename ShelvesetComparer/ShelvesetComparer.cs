@@ -38,12 +38,15 @@ namespace WiredTechSolutions.ShelvesetComparer
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
 
             this.package = package;
+#if DEBUG
+            this.OutputPaneWriteLine("Loading ..");
+#endif
 
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            OleMenuCommandService commandService = this.ServiceProvider.GetService<IMenuCommandService, OleMenuCommandService>();
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, ShelvesetComparerResuldId);
@@ -54,6 +57,8 @@ namespace WiredTechSolutions.ShelvesetComparer
                 menuItem = new MenuCommand(this.ShelvesetComparerTeamExplorerViewIdMenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
+
+            TraceOutput("Package initialized.");
         }
 
         /// <summary>
@@ -85,6 +90,9 @@ namespace WiredTechSolutions.ShelvesetComparer
             Instance = new ShelvesetComparer(package);
         }
 
+        /// <summary>
+        /// Open and show ShelvesetComparer result window.
+        /// </summary>
         public void ShowComparisonWindow()
         {
             ToolWindowPane window = package.FindToolWindow(typeof(ShelvesetComparerToolWindow), 0, true);
@@ -98,6 +106,8 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
         /// <summary>
+        /// Menu item callback for "Team - Results view" item.
+        /// 
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
         /// OleMenuCommandService service and MenuCommand class.
@@ -106,20 +116,12 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerResuldIdMenuItemCallback(object sender, EventArgs e)
         {
-            this.ShowToolWindow(sender, e);
-        }
-
-        /// <summary>
-        /// This function is called when the user clicks the menu item that shows the tool window.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">Event arguments</param>
-        private void ShowToolWindow(object sender, EventArgs e)
-        {
             this.ShowComparisonWindow();
         }
 
         /// <summary>
+        /// Menu item callback for "Team - Select view" item.
+        /// 
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
         /// OleMenuCommandService service and MenuCommand class.
@@ -128,28 +130,65 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="e">Event args.</param>
         private void ShelvesetComparerTeamExplorerViewIdMenuItemCallback(object sender, EventArgs e)
         {
-            try
-            {
-                ITeamExplorer teamExplorer = GetService<ITeamExplorer>();
-                if (teamExplorer != null)
-                {
-                    teamExplorer.NavigateToPage(new Guid(ShelvesetComparerPage.PageId), null);
-                }
-            }
-            catch (Exception ex)
-            {
-                //this.ShowNotification(ex.Message, NotificationType.Error);
-            }
+            NavigateToShelvestComparerPage();
         }
 
-        public T GetService<T>()
+        /// <summary>
+        /// Open ShelvesetComparer select page in TeamExplorer
+        /// </summary>
+        public void NavigateToShelvestComparerPage()
         {
-            if (this.ServiceProvider != null)
+            var teamExplorer = ServiceProvider.GetService<ITeamExplorer>();
+            teamExplorer.NavigateToShelvesetComparer();
+        }
+
+        /// <summary>
+        /// Write trace to output (only if trace is enabled)
+        /// </summary>
+        public void TraceOutput(string text)
+        {
+#if TRACE
+            OutputPaneWriteLine(text);
+#endif
+        }
+
+        /// <summary>
+        /// Write to own output pane in output window with optional DateTime prefix and activate pane afterwards.
+        /// </summary>
+        public void OutputPaneWriteLine(string text, bool prefixDateTime = true)
+        {
+            OutputPaneWriteLine(this.ServiceProvider, text, prefixDateTime);
+        }
+
+        /// <summary>
+        /// Write text with optional DateTime prefix to own output pane (create if not existing) and activate pane afterwards.
+        /// </summary>
+        public static void OutputPaneWriteLine(IServiceProvider serviceProvider, string text, bool prefixDateTime = true)
+        {
+            var outWindow = serviceProvider.GetService<SVsOutputWindow, IVsOutputWindow>();
+            if (outWindow == null)
             {
-                return (T)this.ServiceProvider.GetService(typeof(T));
+                return;
             }
 
-            return default(T);
+            // randomly generated GUID to identify the "Shelveset Comparer" output window pane
+            const string c_ExtensionOutputWindowGuid = "{38BFBA25-8AB3-4F8E-B992-930E403AA281}";
+            Guid paneGuid = new Guid(c_ExtensionOutputWindowGuid);
+            IVsOutputWindowPane generalPane = null;
+            outWindow.GetPane(ref paneGuid, out generalPane);
+            if (generalPane == null)
+            {
+                // the pane doesn't already exist
+                outWindow.CreatePane(ref paneGuid, Resources.ToolWindowTitle, Convert.ToInt32(true), Convert.ToInt32(true));
+                outWindow.GetPane(ref paneGuid, out generalPane);
+            }
+
+            if (prefixDateTime)
+            {
+                text = $"{DateTime.Now:G} {text}";
+            }
+            generalPane.OutputString(text + Environment.NewLine);
+            generalPane.Activate();
         }
     }
 }

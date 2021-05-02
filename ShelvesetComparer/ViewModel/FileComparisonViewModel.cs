@@ -12,12 +12,12 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <summary>
         /// Gets or sets the first pending change file
         /// </summary>
-        public PendingChange FirstFile { get; set; }
+        public IPendingChange FirstFile { get; set; }
 
         /// <summary>
         /// Gets or sets the second pending change file
         /// </summary>
-        public PendingChange SecondFile { get; set; }
+        public IPendingChange SecondFile { get; set; }
 
         /// <summary>
         /// Gets the display name of the first file
@@ -51,7 +51,7 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// </summary>
         /// <param name="pendingChange">The pending change file</param>
         /// <returns>The full file path of the given pending change</returns>
-        private static string GetFullFilePath(PendingChange pendingChange)
+        private static string GetFullFilePath(IPendingChange pendingChange)
         {
             return (pendingChange != null) ? string.Format(CultureInfo.CurrentCulture, @"{0}/{1}", pendingChange.LocalOrServerFolder, pendingChange.FileName) : string.Empty;
         }

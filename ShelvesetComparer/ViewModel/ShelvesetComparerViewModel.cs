@@ -1,4 +1,9 @@
-﻿// <copyright file="ShelvesetComparerViewModel.cs" company="http://shelvesetcomparer.codeplex.com">Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) This is sample code only, do not use in production environments.</copyright>
+﻿// <copyright file="ShelvesetComparerViewModel.cs" company="http://shelvesetcomparer.codeplex.com">
+// Copyright http://shelvesetcomparer.codeplex.com. All Rights Reserved. 
+// This code released under the terms of the Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.) 
+// This is sample code only, do not use in production environments.
+// </copyright>
+
 namespace WiredTechSolutions.ShelvesetComparer
 {
     using System;
@@ -261,12 +266,17 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
         }
 
+        //public void Initialize(ShelvesetViewModel firstShelveset, ShelvesetViewModel secondShelveset)
+        //{
+        //    Initialize(firstShelveset?.Shelveset, secondShelveset?.Shelveset);
+        //}
+
         /// <summary>
         /// Initializes the Shelveset Comparison View Model
         /// </summary>
         /// <param name="firstShelveset">The first shelveset.</param>
         /// <param name="secondShelveset">The second shelveset</param>
-        public void Initialize(Shelveset firstShelveset, Shelveset secondShelveset)
+        public void Initialize(ShelvesetViewModel firstShelveset, ShelvesetViewModel secondShelveset)
         {
             if (firstShelveset == null)
             {
@@ -279,30 +289,29 @@ namespace WiredTechSolutions.ShelvesetComparer
             }
 
             var tfcontextManager = this.GetService<ITeamFoundationContextManager>();
-            var vcs = tfcontextManager.CurrentContext.TeamProjectCollection.GetService<VersionControlServer>();
+            VersionControlServer vcs = null;
+#if ! StubbingWithoutServer
+            vcs = tfcontextManager.CurrentContext?.TeamProjectCollection?.GetService<VersionControlServer>();
             if (vcs == null)
             {
                 this.SummaryText = Resources.ConnectionErrorMessage;
                 return;
             }
+#endif
 
             this.FirstShelvesetName = firstShelveset.Name;
             this.SecondShelvesetName = secondShelveset.Name;
 
             this.files.Clear();
-            var firstShelvesetChanges = vcs.QueryShelvedChanges(firstShelveset)[0].PendingChanges;
-            var secondShelvesetChanges = vcs.QueryShelvedChanges(secondShelveset)[0].PendingChanges;
+            var firstShelvesetChanges = GetPendingChanges(firstShelveset, vcs);
+            var secondShelvesetChanges = GetPendingChanges(secondShelveset, vcs);
             var orderedCollection = new SortedList<string, FileComparisonViewModel>();
             
             int sameContentFileCount = 0;
             int commonFilesCount = 0;
             foreach (var pendingChange in firstShelvesetChanges)
             {
-                var matchingFile = secondShelvesetChanges.FirstOrDefault(s => s.ItemId == pendingChange.ItemId);
-                if (matchingFile == null)
-                {
-                    matchingFile = secondShelvesetChanges.FirstOrDefault(s => s.LocalOrServerItem == pendingChange.LocalOrServerItem);
-                }
+                var matchingFile = FindMatchingChangeInOtherPendingChanges(pendingChange, secondShelvesetChanges);
 
                 bool sameContent = matchingFile != null ? AreFilesInPendingChangesSame(pendingChange, matchingFile) : false;
                 FileComparisonViewModel comparisonItem = new FileComparisonViewModel()
@@ -364,6 +373,104 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
         /// <summary>
+        /// Get Shelveset pending change (or stub data if active).
+        /// </summary>
+        private IPendingChange[] GetPendingChanges(ShelvesetViewModel shelveset, VersionControlServer vcs)
+        {
+#if ! StubbingWithoutServer
+            return vcs.QueryShelvedChanges(shelveset.Shelveset)[0].PendingChanges
+                .Select(pc => new PendingChangeFacade(pc)).ToArray<IPendingChange>();
+
+#else
+            ShelvesetComparer.Instance.TraceOutput("Debug mode active: using fake pending changes for easier debugging.");
+            if (shelveset.Name.Equals("Shelveset1"))
+            {
+                return new List<IPendingChange>() 
+                {
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1", @"$/Main/BranchA/src/file1", ItemType.File, 1, ChangeType.Edit, new byte[] { 0x1 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x2 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x3 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file4", @"$/Main/BranchA/include/file4", ItemType.File, 4, ChangeType.Edit, new byte[] { 0x4 }),
+                }
+                .ToArray();
+            }
+            if (shelveset.Name.Equals("Shelveset2"))
+            {
+                return new List<IPendingChange>()
+                {
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1_1", @"$/Main/BranchA/src/file1_1", ItemType.File, 1, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchA/src/file2", ItemType.File, 2, ChangeType.Edit, new byte[] { 0x20 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchA/include/file1", ItemType.File, 3, ChangeType.Edit, new byte[] { 0x30 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file4", @"$/Main/BranchA/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x4 }),
+                }
+                .ToArray();
+            }
+            if (shelveset.Name.Equals("Shelveset3"))
+            {
+                // different branch
+                return new List<IPendingChange>()
+                {
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file1_1", @"$/Main/BranchB/src/file1_1", ItemType.File, 10, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x10 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file2", @"$/Main/BranchB/src/file2", ItemType.File, 20, ChangeType.Edit, new byte[] { 0x20 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\include\file1", @"$/Main/BranchB/include/file1", ItemType.File, 30, ChangeType.Edit, new byte[] { 0x30 }),
+                    new PendingChangeFacadeStub(null, @"C:\WS\src\file4", @"$/Main/BranchB/src/file4", ItemType.File, 4, ChangeType.Edit | ChangeType.Rename, new byte[] { 0x40 }),
+                }
+                .ToArray();
+            }
+
+            return new List<IPendingChange>().ToArray();   
+#endif
+        }
+
+        /// <summary>
+        /// Find best matching IPendingChange in <paramref name="secondShelvesetChanges"/>
+        /// </summary>
+        /// <returns>Best matching IPendingChange in <paramref name="secondShelvesetChanges"/> or null</returns>
+        private IPendingChange FindMatchingChangeInOtherPendingChanges(IPendingChange firstPendingChange, IPendingChange[] secondShelvesetChanges)
+        {
+            var matchingFile = secondShelvesetChanges.FirstOrDefault(s => s.ItemId == firstPendingChange.ItemId);
+            if (matchingFile == null)
+            {
+                matchingFile = secondShelvesetChanges.FirstOrDefault(s => s.LocalOrServerItem == firstPendingChange.LocalOrServerItem);
+            }
+            if (matchingFile == null)
+            {
+                // try to find a best matching file by relative path.
+                matchingFile = FindMatchingChangeWithBestMatchingRelativePath(firstPendingChange, secondShelvesetChanges);
+            }
+
+            return matchingFile;
+        }
+
+        /// <summary>
+        /// Find best matching IPendingChange with best matching relative path (to compare between different branches)
+        /// </summary>
+        private IPendingChange FindMatchingChangeWithBestMatchingRelativePath(IPendingChange firstPendingChange, IPendingChange[] secondShelvesetChanges)
+        {
+            IPendingChange bestMatchingItem = null;
+            var remainingPath = Path.GetDirectoryName(firstPendingChange.LocalOrServerItem).Replace('\\', '/');
+            var relativeItemPath = firstPendingChange.LocalOrServerItem.Replace(remainingPath + "/", string.Empty);
+
+            do
+            {
+                var matches = secondShelvesetChanges.Where(pc => pc.LocalOrServerItem.EndsWith(relativeItemPath, StringComparison.OrdinalIgnoreCase));
+                if (matches.Count() == 1)
+                {
+                    bestMatchingItem = matches.First();
+                }
+                else if (!matches.Any())
+                {
+                    return bestMatchingItem;
+                }
+
+                remainingPath = Path.GetDirectoryName(remainingPath).Replace('\\', '/');
+                relativeItemPath = firstPendingChange.LocalOrServerItem.Replace(remainingPath + "/", string.Empty);
+            } while (remainingPath != "$" && remainingPath.Length > 0);
+
+            return bestMatchingItem;
+        }
+
+        /// <summary>
         /// The method find a pending change item in the collection with the given item id.
         /// </summary>
         /// <param name="orderedCollection">The collection to find the pending change file in.</param>
@@ -374,7 +481,7 @@ namespace WiredTechSolutions.ShelvesetComparer
             foreach (string key in orderedCollection.Keys)
             {
                 var item = orderedCollection[key];
-                if ((item.FirstFile != null && item.FirstFile.ItemId == itemId) || (item.SecondFile != null && item.SecondFile.ItemId == itemId))
+                if ((item.FirstFile?.ItemId == itemId) || (item.SecondFile?.ItemId == itemId))
                 {
                     return item;
                 }
@@ -384,47 +491,22 @@ namespace WiredTechSolutions.ShelvesetComparer
         }
 
         /// <summary>
-        /// Compares two given files.
+        /// Compares two given streams.
         /// </summary>
-        /// <param name="firstFilePath">The first file path </param>
-        /// <param name="secondFilePath">The second file path</param>
-        /// <returns>True if the content of the files is the same. False otherwise</returns>
-        private static bool FileCompare(string firstFilePath, string secondFilePath)
+        /// <param name="firstFilePath">The first file stream</param>
+        /// <param name="secondFilePath">The second file stream</param>
+        /// <returns>True if the content of the streams is the same. False otherwise</returns>
+        private static bool StreamCompare(Stream firstFileStream, Stream secondFileStream)
         {
             int file1byte;
             int file2byte;
-            FileStream fs1 = null;
-            FileStream fs2 = null;
 
-            if (firstFilePath == secondFilePath)
+            do
             {
-                return true;
+                file1byte = firstFileStream.ReadByte();
+                file2byte = secondFileStream.ReadByte();
             }
-
-            try
-            {
-                fs1 = new FileStream(firstFilePath, FileMode.Open);
-                fs2 = new FileStream(secondFilePath, FileMode.Open);
-
-                do
-                {
-                    file1byte = fs1.ReadByte();
-                    file2byte = fs2.ReadByte();
-                }
-                while ((file1byte == file2byte) && (file1byte != -1));
-            }
-            finally
-            {
-                if (fs1 != null)
-                {
-                    fs1.Close();
-                }
-
-                if (fs2 != null)
-                {
-                    fs2.Close();
-                }   
-            }
+            while ((file1byte == file2byte) && (file1byte != -1));
 
             return (file1byte - file2byte) == 0;
         }
@@ -435,16 +517,21 @@ namespace WiredTechSolutions.ShelvesetComparer
         /// <param name="firstPendingChange">The first pending change file.</param>
         /// <param name="secondPendingChange">The second pending change file</param>
         /// <returns>True if the file contents are same. False otherwise.</returns>
-        private static bool AreFilesInPendingChangesSame(PendingChange firstPendingChange, PendingChange secondPendingChange)
+        private static bool AreFilesInPendingChangesSame(IPendingChange firstPendingChange, IPendingChange secondPendingChange)
         {
-            if (firstPendingChange != null && secondPendingChange != null && firstPendingChange.ChangeType != ChangeType.Delete && secondPendingChange.ChangeType != ChangeType.Delete)
+            if (firstPendingChange != null && secondPendingChange != null 
+                && firstPendingChange.ChangeType != ChangeType.Delete && secondPendingChange.ChangeType != ChangeType.Delete)
             {
-                string pendingChangeFileName = Path.GetTempFileName();
-                firstPendingChange.DownloadShelvedFile(pendingChangeFileName);
+                if (firstPendingChange.UploadHashValue != null)
+                {
+                    return firstPendingChange.UploadHashValue.SequenceEqual(secondPendingChange.UploadHashValue);
+                }
 
-                string matchingFileName = Path.GetTempFileName();
-                secondPendingChange.DownloadShelvedFile(matchingFileName);
-                return FileCompare(pendingChangeFileName, matchingFileName);
+                using (var firstFileStream = firstPendingChange.DownloadShelvedFile())
+                using (var secondFileStream = secondPendingChange.DownloadShelvedFile())
+                {
+                    return StreamCompare(firstFileStream, secondFileStream);
+                }
             }
 
             return false;
